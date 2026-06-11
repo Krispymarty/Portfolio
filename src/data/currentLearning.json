@@ -1,0 +1,32 @@
+[
+  {
+    "name": "RAG Pipelines",
+    "description": "Retrieval-augmented generation for grounding LLM outputs in real data",
+    "status": "active"
+  },
+  {
+    "name": "Vector Databases",
+    "description": "Pinecone, ChromaDB, and embedding-based similarity search",
+    "status": "active"
+  },
+  {
+    "name": "AI Agents",
+    "description": "Autonomous agents with tool-calling, planning, and memory",
+    "status": "active"
+  },
+  {
+    "name": "Multi-Agent Systems",
+    "description": "Orchestrating multiple specialized agents for complex tasks",
+    "status": "exploring"
+  },
+  {
+    "name": "Local LLM Infrastructure",
+    "description": "Running and fine-tuning models locally with Ollama and vLLM",
+    "status": "exploring"
+  },
+  {
+    "name": "FastAPI",
+    "description": "High-performance Python APIs for ML model serving",
+    "status": "active"
+  }
+]
