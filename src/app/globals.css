@@ -6,6 +6,7 @@
   --color-background: var(--background);
   --color-surface: var(--surface);
   --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
   --color-accent: var(--accent);
   
   --color-text-primary: var(--text-primary);
@@ -16,21 +17,12 @@
   --font-mono: var(--font-geist-mono);
 }
 
-:root {
-  --background: #F8FAFC;
-  --surface: #FFFFFF;
-  --primary: #4F7CFF;
-  --accent: #8B5CF6;
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --border: #E2E8F0;
-}
-
-.dark {
-  --background: #0A0F1F;
-  --surface: #111827;
-  --primary: #4F7CFF;
-  --accent: #8B5CF6;
+:root, .dark {
+  --background: #050816;
+  --surface: #0F172A;
+  --primary: #38BDF8;
+  --secondary: #A855F7;
+  --accent: #F472B6;
   --text-primary: #F8FAFC;
   --text-secondary: #94A3B8;
   --border: #1E293B;
@@ -43,13 +35,13 @@ body {
 }
 
 /* Scrollbar styling for dark mode */
-.dark ::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 6px;
 }
-.dark ::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: var(--background);
 }
-.dark ::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: var(--border);
   border-radius: 3px;
 }

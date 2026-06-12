@@ -1,32 +1,32 @@
 [
   {
-    "name": "RAG Pipelines",
-    "description": "Retrieval-augmented generation for grounding LLM outputs in real data",
+    "name": "RAG Systems",
+    "description": "Retrieval-augmented generation for grounding LLM outputs in proprietary data.",
     "status": "active"
   },
   {
     "name": "Vector Databases",
-    "description": "Pinecone, ChromaDB, and embedding-based similarity search",
+    "description": "Building semantic search and memory using pgvector and Pinecone.",
     "status": "active"
   },
   {
     "name": "AI Agents",
-    "description": "Autonomous agents with tool-calling, planning, and memory",
+    "description": "Designing autonomous agents with reasoning, tool-calling, and planning capabilities.",
     "status": "active"
-  },
-  {
-    "name": "Multi-Agent Systems",
-    "description": "Orchestrating multiple specialized agents for complex tasks",
-    "status": "exploring"
   },
   {
     "name": "Local LLM Infrastructure",
-    "description": "Running and fine-tuning models locally with Ollama and vLLM",
+    "description": "Running, quantizing, and orchestrating open-weights models locally.",
     "status": "exploring"
   },
   {
-    "name": "FastAPI",
-    "description": "High-performance Python APIs for ML model serving",
+    "name": "FastAPI Architecture",
+    "description": "Structuring high-performance, asynchronous Python APIs for model serving.",
     "status": "active"
+  },
+  {
+    "name": "Product Development",
+    "description": "Iterating on user experience, system design, and the path to becoming a founder.",
+    "status": "exploring"
   }
 ]

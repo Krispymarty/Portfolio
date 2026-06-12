@@ -2,18 +2,22 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Target, Lightbulb, Layers, AlertTriangle, Trophy, ArrowDown, ExternalLink } from "lucide-react";
+import { ChevronDown, Target, Lightbulb, Layers, AlertTriangle, Trophy, ArrowDown, ExternalLink, Compass, Zap, Image as ImageIcon } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import Link from "next/link";
+import Image from "next/image";
 
 interface ProjectData {
   name: string;
   description: string;
   problem: string;
+  whyIBuiltIt: string;
   solution: string;
   architecture: string;
   challenges: string;
   lessonsLearned: string;
+  results: string;
+  visualProof: string | null;
   techStack: string[];
   github: string;
   demo: string | null;
@@ -136,6 +140,12 @@ export function FeaturedProjectsSection({ featuredData }: { featuredData: Record
                         </div>
                         <div>
                           <h4 className="flex items-center gap-2 font-bold text-text-primary uppercase tracking-wider mb-3 text-xs">
+                            <Compass size={14} className="text-yellow-400" /> Why I Built It
+                          </h4>
+                          <p className="text-text-secondary leading-relaxed">{project.whyIBuiltIt}</p>
+                        </div>
+                        <div>
+                          <h4 className="flex items-center gap-2 font-bold text-text-primary uppercase tracking-wider mb-3 text-xs">
                             <Lightbulb size={14} className="text-accent" /> Solution
                           </h4>
                           <p className="text-text-secondary leading-relaxed">{project.solution}</p>
@@ -162,6 +172,30 @@ export function FeaturedProjectsSection({ featuredData }: { featuredData: Record
                           </h4>
                           <p className="text-text-secondary leading-relaxed italic">{project.lessonsLearned}</p>
                         </div>
+                        <div>
+                          <h4 className="flex items-center gap-2 font-bold text-text-primary uppercase tracking-wider mb-3 text-xs">
+                            <Zap size={14} className="text-secondary" /> Results
+                          </h4>
+                          <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+                            <p className="text-text-primary font-medium">{project.results}</p>
+                          </div>
+                        </div>
+                        {project.visualProof && (
+                          <div>
+                            <h4 className="flex items-center gap-2 font-bold text-text-primary uppercase tracking-wider mb-3 text-xs">
+                              <ImageIcon size={14} className="text-text-secondary" /> Visual Proof
+                            </h4>
+                            <div className="rounded-lg overflow-hidden border border-border">
+                              <Image 
+                                src={project.visualProof} 
+                                alt={`${project.name} visual proof`} 
+                                width={600} 
+                                height={300} 
+                                className="w-full object-cover"
+                              />
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </motion.div>

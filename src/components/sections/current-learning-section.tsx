@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Zap, Search, Bot, Network, Server, Code2 } from "lucide-react";
+import { Zap, Search, Bot, Network, Server, Code2, Rocket } from "lucide-react";
 
 interface LearningItem {
   name: string;
@@ -10,12 +10,12 @@ interface LearningItem {
 }
 
 const iconMap: Record<string, React.ReactNode> = {
-  "RAG Pipelines": <Search size={20} />,
+  "RAG Systems": <Search size={20} />,
   "Vector Databases": <Server size={20} />,
   "AI Agents": <Bot size={20} />,
-  "Multi-Agent Systems": <Network size={20} />,
   "Local LLM Infrastructure": <Zap size={20} />,
-  "FastAPI": <Code2 size={20} />,
+  "FastAPI Architecture": <Code2 size={20} />,
+  "Product Development": <Rocket size={20} />,
 };
 
 export function CurrentLearningSection({ learningItems }: { learningItems: LearningItem[] }) {

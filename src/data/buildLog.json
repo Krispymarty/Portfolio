@@ -2,7 +2,8 @@
   {
     "date": "June 2026",
     "project": "LifeXP",
-    "challenge": "Designing a scalable user tracking system that can handle habit streaks, progress metrics, and AI-generated recommendations without overcomplicating the data model.",
+    "problem": "Designing a scalable user tracking system that can handle habit streaks and progress metrics.",
+    "context": "We needed to support AI-generated recommendations without overcomplicating the data model or causing slow read queries.",
     "solution": "Implemented PostgreSQL-based progress tracking with a normalized schema. Used materialized views for analytics dashboards to avoid expensive real-time queries.",
     "lessonLearned": "Premature optimization created unnecessary complexity. Starting with the simplest working schema and iterating based on actual usage patterns proved far more effective.",
     "nextStep": "Build the AI habit recommendation engine using user behavioral patterns."
@@ -10,7 +11,8 @@
   {
     "date": "May 2026",
     "project": "LifeXP",
-    "challenge": "Setting up authentication and protected routes with session management that works across the Next.js frontend and FastAPI backend.",
+    "problem": "Setting up authentication and protected routes with session management that works seamlessly.",
+    "context": "The architecture involves Next.js frontend and FastAPI backend, requiring robust cross-framework session management.",
     "solution": "Implemented NextAuth for the frontend with JWT tokens passed to the FastAPI backend. Created middleware for route protection and session validation.",
     "lessonLearned": "Cross-framework auth is more nuanced than single-framework solutions. Token refresh logic needs careful handling to avoid silent session drops.",
     "nextStep": "Design the user onboarding flow and initial goal-setting experience."

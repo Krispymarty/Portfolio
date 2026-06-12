@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Activity, ArrowRight } from "lucide-react";
+import { Activity, ArrowRight, Code, Database, Cpu, Zap } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { FaGithub } from "react-icons/fa";
 
 interface BuildStatus {
@@ -25,6 +26,20 @@ export function LandingSection({ user, repos, buildStatus }: { user: any; repos:
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
+          <div className="flex items-center gap-4 mb-6">
+            <Image 
+              src="/profile.jpg" 
+              alt="Yashmit Singh" 
+              width={64} 
+              height={64} 
+              className="rounded-full border-2 border-primary/30 shadow-lg"
+            />
+            <div>
+              <h2 className="text-xl font-bold text-text-primary">Yashmit Singh</h2>
+              <p className="text-sm text-primary font-medium">Building AI Products</p>
+            </div>
+          </div>
+
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent/10 text-accent border border-accent/20 rounded-full text-xs font-semibold uppercase tracking-wider mb-6">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
@@ -34,39 +49,39 @@ export function LandingSection({ user, repos, buildStatus }: { user: any; repos:
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-text-primary mb-4 leading-[1.1]">
-            {buildStatus.projectName || "Building"}
+            {buildStatus.projectName || "LifeXP"}
           </h1>
 
           <p className="text-lg md:text-xl text-text-secondary leading-relaxed mb-8 max-w-lg">
-            An AI-powered personal growth platform designed to help users transform goals into consistent habits.
+            An AI-powered personal growth platform designed to help people transform goals into consistent habits.
           </p>
 
-          {buildStatus.status && (
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider">Status:</span>
-              <span className="text-sm font-medium px-3 py-1 bg-primary/10 text-primary border border-primary/20 rounded-full">
-                {buildStatus.status}
-              </span>
-            </div>
-          )}
-
-          {buildStatus.currentFocus && buildStatus.currentFocus.length > 0 && (
-            <div className="mb-10">
-              <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider block mb-3">Current Focus:</span>
-              <div className="flex flex-wrap gap-2">
-                {buildStatus.currentFocus.map((focus, i) => (
-                  <span key={i} className="text-sm px-3 py-1.5 bg-surface border border-border rounded-lg text-text-primary font-medium">
-                    {focus}
-                  </span>
-                ))}
+          <div className="mb-10">
+            <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-4">What I Build</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg">
+              <div className="flex items-center gap-3 bg-surface border border-border p-3 rounded-lg">
+                <Cpu size={18} className="text-primary" />
+                <span className="text-sm font-medium text-text-primary">AI Systems</span>
+              </div>
+              <div className="flex items-center gap-3 bg-surface border border-border p-3 rounded-lg">
+                <Zap size={18} className="text-secondary" />
+                <span className="text-sm font-medium text-text-primary">Automation Tools</span>
+              </div>
+              <div className="flex items-center gap-3 bg-surface border border-border p-3 rounded-lg">
+                <Database size={18} className="text-primary" />
+                <span className="text-sm font-medium text-text-primary">Machine Learning Applications</span>
+              </div>
+              <div className="flex items-center gap-3 bg-surface border border-border p-3 rounded-lg">
+                <Code size={18} className="text-accent" />
+                <span className="text-sm font-medium text-text-primary">Product Experiments</span>
               </div>
             </div>
-          )}
+          </div>
 
           <div className="flex flex-wrap gap-3">
             <Link
-              href="#projects"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(79,124,255,0.25)] hover:shadow-[0_0_30px_rgba(79,124,255,0.4)]"
+              href="#lifexp"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-background font-semibold rounded-lg hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(56,189,248,0.25)] hover:shadow-[0_0_30px_rgba(56,189,248,0.4)]"
             >
               View LifeXP <ArrowRight size={16} />
             </Link>
@@ -75,19 +90,6 @@ export function LandingSection({ user, repos, buildStatus }: { user: any; repos:
               className="inline-flex items-center gap-2 px-6 py-3 bg-surface text-text-primary border border-border font-medium rounded-lg hover:border-primary/50 transition-colors"
             >
               View Build Log
-            </Link>
-            <Link
-              href={user?.html_url || "https://github.com/Krispymarty"}
-              target="_blank"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-surface text-text-primary border border-border font-medium rounded-lg hover:border-primary/50 transition-colors"
-            >
-              <FaGithub size={16} /> GitHub
-            </Link>
-            <Link
-              href="/resume.pdf"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-surface text-text-primary border border-border font-medium rounded-lg hover:border-primary/50 transition-colors"
-            >
-              Resume
             </Link>
           </div>
         </motion.div>
