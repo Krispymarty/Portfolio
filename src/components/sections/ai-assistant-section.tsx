@@ -66,7 +66,7 @@ export function AIAssistantSection() {
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-text-primary">AI Assistant</h2>
         <div className="h-px bg-border flex-1" />
       </div>
-      <p className="text-text-secondary mb-8 max-w-xl">Powered by Gemini. Ask anything about my projects, skills, or experience.</p>
+      <p className="text-text-secondary mb-8 max-w-xl">Powered by Groq. Ask anything about my projects, skills, or experience.</p>
 
       {/* Inline chat widget */}
       <div className="bg-surface border border-border rounded-2xl overflow-hidden max-w-2xl">
@@ -74,7 +74,7 @@ export function AIAssistantSection() {
         <div className="bg-background/60 border-b border-border px-5 py-3 flex items-center gap-2">
           <Bot size={16} className="text-accent" />
           <span className="text-sm font-semibold text-text-primary">Ask Yashmit&apos;s AI</span>
-          <span className="ml-auto text-[10px] font-bold text-text-secondary uppercase tracking-widest">Gemini 2.0 Flash</span>
+          <span className="ml-auto text-[10px] font-bold text-text-secondary uppercase tracking-widest">Llama 3.1 8B</span>
         </div>
 
         {/* Messages */}
@@ -88,7 +88,7 @@ export function AIAssistantSection() {
               )}
               <div className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
                 msg.role === "user"
-                  ? "bg-primary text-white rounded-br-md"
+                  ? "bg-primary text-black rounded-br-md"
                   : "bg-background border border-border text-text-primary rounded-bl-md"
               }`}>
                 {msg.content}

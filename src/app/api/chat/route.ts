@@ -1,13 +1,13 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import Groq from "groq-sdk";
 import { AI_SYSTEM_PROMPT } from "@/data/aiContext";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GROQ_API_KEY;
 
   if (!apiKey) {
     return NextResponse.json(
-      { error: "AI assistant is not configured. Please set GEMINI_API_KEY." },
+      { error: "AI assistant is not configured. Please set GROQ_API_KEY." },
       { status: 500 }
     );
   }
@@ -19,16 +19,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Message is required." }, { status: 400 });
     }
 
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const groq = new Groq({ apiKey });
 
-    const result = await model.generateContent({
-      contents: [
-        { role: "user", parts: [{ text: AI_SYSTEM_PROMPT + "\n\nUser question: " + message }] }
+    const chatCompletion = await groq.chat.completions.create({
+      messages: [
+        { role: "system", content: AI_SYSTEM_PROMPT },
+        { role: "user", content: message }
       ],
+      model: "llama-3.1-8b-instant",
+      temperature: 0.7,
+      max_completion_tokens: 500,
     });
 
-    const response = result.response.text();
+    const response = chatCompletion.choices[0]?.message?.content || "I couldn't generate a response.";
 
     return NextResponse.json({ response });
   } catch (error) {
