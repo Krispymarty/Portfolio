@@ -18,20 +18,34 @@
 }
 
 :root, .dark {
-  --background: #050816;
-  --surface: #0F172A;
-  --primary: #38BDF8;
-  --secondary: #A855F7;
-  --accent: #F472B6;
-  --text-primary: #F8FAFC;
-  --text-secondary: #94A3B8;
-  --border: #1E293B;
+  --background: #000000;
+  --surface: #09090b; /* zinc-950 */
+  --primary: #ffffff;
+  --secondary: #a1a1aa; /* zinc-400 */
+  --accent: #8b5cf6; /* violet-500 */
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --border: #27272a; /* zinc-800 */
 }
 
 body {
   background-color: var(--background);
   color: var(--text-primary);
   font-family: var(--font-sans);
+}
+
+/* Premium Glow Utilities */
+.glow-ambient {
+  background: radial-gradient(circle at top left, rgba(139, 92, 246, 0.15), transparent 40%),
+              radial-gradient(circle at bottom right, rgba(6, 182, 212, 0.15), transparent 40%);
+}
+
+.glow-purple {
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, rgba(0, 0, 0, 0) 60%);
+}
+
+.glow-cyan {
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, rgba(0, 0, 0, 0) 60%);
 }
 
 /* Scrollbar styling for dark mode */

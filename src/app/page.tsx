@@ -20,9 +20,9 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col">
-      <LandingSection user={user} repos={repos} buildStatus={buildStatusData} />
-      <AboutSection />
+      <LandingSection />
       <LifeXPSection />
+      <AboutSection />
       <FeaturedProjectsSection featuredData={featuredProjectsData} />
       <BuildLogSection buildLogs={buildLogData} />
       <CurrentLearningSection learningItems={currentLearningData} />
