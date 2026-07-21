@@ -14,9 +14,11 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  alternates: { canonical: "/" },
   title: "Yashmit Singh — Builder's OS",
   description:
     "Yashmit Singh is a computer-science student building explainable machine-learning systems and the product infrastructure around them.",
@@ -37,12 +39,6 @@ export const metadata: Metadata = {
     description: "Explainable AI, real-time computer vision, and product engineering.",
   },
   robots: { index: true, follow: true },
-  ...(siteUrl
-    ? {
-        metadataBase: new URL(siteUrl),
-        alternates: { canonical: "/" },
-      }
-    : {}),
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

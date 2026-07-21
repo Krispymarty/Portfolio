@@ -22,6 +22,8 @@ The portfolio now presents one evidence-led narrative from identity through cont
 - Impeccable detector: 0 findings.
 - ESLint: pass.
 - TypeScript `--noEmit`: pass.
+- Next.js production build: pass (8 routes generated; no metadata warnings).
+- `npm audit --omit=dev`: 0 vulnerabilities.
 
 ## Content and provenance
 
