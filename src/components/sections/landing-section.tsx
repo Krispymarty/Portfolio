@@ -69,13 +69,14 @@ export function LandingSection() {
           >
             View Current Build <ArrowRight size={16} />
           </Link>
-          <Link
+          <a
             href="/resume.pdf"
             target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 bg-surface/80 text-text-primary border border-border font-medium rounded-lg hover:bg-surface hover:border-text-secondary/30 transition-all backdrop-blur-sm"
           >
             <FileText size={16} /> Read Resume
-          </Link>
+          </a>
         </motion.div>
       </div>
     </section>

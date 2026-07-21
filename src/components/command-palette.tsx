@@ -74,7 +74,7 @@ export function CommandPalette() {
             </Command.Group>
 
             <Command.Group heading="Actions" className="text-[10px] text-text-secondary font-bold uppercase tracking-widest px-2 pt-3 pb-1">
-              <Command.Item onSelect={() => go("/resume.pdf")} className="flex items-center gap-3 px-3 py-2.5 text-sm text-text-primary rounded-lg cursor-pointer data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary transition-colors">
+              <Command.Item onSelect={() => { setOpen(false); window.open("/resume.pdf", "_blank"); }} className="flex items-center gap-3 px-3 py-2.5 text-sm text-text-primary rounded-lg cursor-pointer data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary transition-colors">
                 <FileText size={15} /> Open Resume
               </Command.Item>
             </Command.Group>

@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, Send, X, Bot, User } from "lucide-react";
+import { Send, Bot, User } from "lucide-react";
 
 interface Message {
   role: "user" | "assistant";
@@ -17,7 +16,6 @@ const SUGGESTIONS = [
 ];
 
 export function AIAssistantSection() {
-  const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: "Hi! I'm Yashmit's AI assistant. Ask me anything about his projects, skills, or experience." }
   ]);

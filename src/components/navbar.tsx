@@ -2,18 +2,9 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useTheme } from "next-themes";
-import { Moon, Sun, Command } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Command } from "lucide-react";
 
 export function Navbar() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
     <motion.nav 
       initial={{ y: -20, opacity: 0 }}
@@ -45,15 +36,6 @@ export function Navbar() {
             >
               <Command size={14} /> <span>Ctrl+K</span>
             </button>
-            {mounted && (
-              <button
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="p-2 text-text-secondary hover:text-text-primary rounded-md border border-border bg-surface transition-colors"
-              >
-                {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                <span className="sr-only">Toggle theme</span>
-              </button>
-            )}
           </div>
         </div>
       </div>

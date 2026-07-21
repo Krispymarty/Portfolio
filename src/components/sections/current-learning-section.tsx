@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Zap, Search, Bot, Network, Server, Code2, Rocket } from "lucide-react";
+import { Zap, Search, Bot, Server, Code2, Rocket } from "lucide-react";
 
 interface LearningItem {
   name: string;

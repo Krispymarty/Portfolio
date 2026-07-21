@@ -1,34 +1,178 @@
-import { getGithubUser, getGithubRepos } from "@/lib/github";
-import featuredProjectsData from "@/data/featuredProjects.json";
-import buildStatusData from "@/data/buildStatus.json";
-import buildLogData from "@/data/buildLog.json";
-import currentLearningData from "@/data/currentLearning.json";
+import Image from "next/image";
+import type { Metadata } from "next";
+import { ArrowUpRight, Download, Mail, MapPin } from "lucide-react";
+import { FaGithub as Github, FaLinkedin as Linkedin } from "react-icons/fa";
+import profileImage from "../../public/profile.jpg";
+import { DecisionCore } from "@/components/decision-core";
+import { NarrativeSignal } from "@/components/narrative-signal";
+import { JourneySequence } from "@/components/journey-sequence";
+import { CapabilityMap } from "@/components/capability-map";
+import { ProjectLab } from "@/components/project-lab";
+import { portfolio } from "@/data/portfolio";
 
-import { LandingSection } from "@/components/sections/landing-section";
-import { AboutSection } from "@/components/sections/about-section";
-import { LifeXPSection } from "@/components/sections/lifexp-section";
-import { BuildLogSection } from "@/components/sections/build-log-section";
-import { FeaturedProjectsSection } from "@/components/sections/featured-projects-section";
-import { CurrentLearningSection } from "@/components/sections/current-learning-section";
-import { GitHubIntegrationSection } from "@/components/sections/github-integration-section";
-import { AIAssistantSection } from "@/components/sections/ai-assistant-section";
-import { ContactSection } from "@/components/sections/contact-section";
+export const metadata: Metadata = {
+  title: "Yashmit Singh - Explainable AI & Product Engineering",
+};
 
-export default async function Home() {
-  const user = await getGithubUser("Krispymarty");
-  const repos = await getGithubRepos("Krispymarty");
+function ExternalArrow() {
+  return <ArrowUpRight aria-hidden="true" size={16} strokeWidth={1.8} />;
+}
+
+export default function Home() {
+  const { profile } = portfolio;
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: profile.name,
+    description: profile.role,
+    email: `mailto:${profile.email}`,
+    homeLocation: { "@type": "Place", name: profile.location },
+    url: process.env.NEXT_PUBLIC_SITE_URL || undefined,
+    sameAs: [profile.github, profile.linkedin],
+    alumniOf: {
+      "@type": "CollegeOrUniversity",
+      name: "University of Petroleum and Energy Studies",
+    },
+  };
 
   return (
-    <div className="flex flex-col">
-      <LandingSection />
-      <LifeXPSection />
-      <AboutSection />
-      <FeaturedProjectsSection featuredData={featuredProjectsData} />
-      <BuildLogSection buildLogs={buildLogData} />
-      <CurrentLearningSection learningItems={currentLearningData} />
-      <GitHubIntegrationSection user={user} repos={repos} />
-      <AIAssistantSection />
-      <ContactSection />
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
+      <a className="skip-link" href="#main-content">Skip to content</a>
+      <NarrativeSignal />
+
+      <header className="site-header">
+        <a className="site-mark" href="#arrival" aria-label="Yashmit Singh, back to the beginning">
+          <span>YS</span><strong>{profile.shortName}</strong>
+        </a>
+        <nav className="desktop-nav" aria-label="Primary navigation">
+          <a href="#journey">Journey</a>
+          <a href="#capabilities">Capabilities</a>
+          <a href="#work">Selected work</a>
+          <a href="#experience">Experience</a>
+        </nav>
+        <a className="header-contact" href={`mailto:${profile.email}`}>
+          Start a conversation <ExternalArrow />
+        </a>
+        <details className="mobile-menu">
+          <summary aria-label="Open navigation">Menu</summary>
+          <nav aria-label="Mobile navigation">
+            <a href="#journey">Journey</a>
+            <a href="#capabilities">Capabilities</a>
+            <a href="#work">Selected work</a>
+            <a href="#experience">Experience</a>
+            <a href="#contact">Contact</a>
+          </nav>
+        </details>
+      </header>
+
+      <main id="main-content">
+        <section className="hero section-shell" id="arrival" aria-labelledby="arrival-title">
+          <div className="hero-copy">
+            <p className="availability"><span />{profile.availability}</p>
+            <h1 id="arrival-title" aria-label={profile.headline}>
+              <span className="headline-mask" aria-hidden="true"><span>From model accuracy</span></span>
+              <span className="headline-mask" aria-hidden="true"><span>to useful decisions.</span></span>
+            </h1>
+            <p className="hero-intro">{profile.introduction}</p>
+            <div className="hero-actions">
+              <a className="action action--primary" href="#work">Inspect the work <ExternalArrow /></a>
+              <a className="action action--quiet" href={profile.resume} target="_blank" rel="noreferrer">
+                Résumé <Download aria-hidden="true" size={16} />
+              </a>
+            </div>
+            <div className="identity-proof">
+              <Image
+                src={profileImage}
+                alt="Portrait of Yashmit Singh"
+                width={80}
+                height={80}
+                priority
+                placeholder="blur"
+              />
+              <div>
+                <strong>{profile.name}</strong>
+                <span>{profile.role}</span>
+                <small><MapPin aria-hidden="true" size={13} />{profile.location}</small>
+              </div>
+            </div>
+          </div>
+          <div className="hero-core"><DecisionCore /></div>
+          <p className="scroll-cue"><span /> Follow the decision path</p>
+        </section>
+
+        <section className="journey section-shell" id="journey" aria-labelledby="journey-title">
+          <div className="section-heading section-heading--split">
+            <h2 id="journey-title">The work changed as the questions changed.</h2>
+            <p>First: can the model find the pattern? Then: can it explain the decision? Now: can the whole system be useful?</p>
+          </div>
+          <JourneySequence />
+        </section>
+
+        <section className="capabilities section-shell" id="capabilities" aria-labelledby="capabilities-title">
+          <div className="section-heading">
+            <h2 id="capabilities-title">Capabilities, connected to evidence.</h2>
+            <p>Technologies are grouped by what they enable. “Current exploration” is intentionally separated from demonstrated project work.</p>
+          </div>
+          <CapabilityMap />
+        </section>
+
+        <section className="selected-work section-shell" id="work" aria-labelledby="work-title">
+          <div className="section-heading section-heading--split">
+            <h2 id="work-title">Three systems. Three different kinds of proof.</h2>
+            <p>The first two are backed by the current résumé. LifeXP is labelled as an active build and keeps planned work visibly separate from completed work.</p>
+          </div>
+          <ProjectLab />
+        </section>
+
+        <section className="experience section-shell" id="experience" aria-labelledby="experience-title">
+          <div className="section-heading section-heading--split">
+            <h2 id="experience-title">Engineering in context.</h2>
+            <p>The portfolio is the record of a student in motion: academic foundations, measurable technical work, and leadership outside a model pipeline.</p>
+          </div>
+          <div className="proof-layout">
+            <div className="proof-column">
+              <h3>Experience</h3>
+              {portfolio.experience.map((item) => (
+                <article key={item.role}><span>{item.period}</span><h4>{item.role}</h4><p className="proof-organisation">{item.organisation}</p><p>{item.detail}</p></article>
+              ))}
+            </div>
+            <div className="proof-column">
+              <h3>Education</h3>
+              {portfolio.education.map((item) => (
+                <article key={item.qualification}><span>{item.period}</span><h4>{item.qualification}</h4><p className="proof-organisation">{item.institution}</p><p>{item.detail}</p></article>
+              ))}
+            </div>
+            <aside className="achievement-list" aria-labelledby="achievement-title">
+              <h3 id="achievement-title">Recorded signals</h3>
+              <ul>{portfolio.achievements.map((achievement) => <li key={achievement}>{achievement}</li>)}</ul>
+              <p>No certifications were found in the repository, so none are displayed.</p>
+            </aside>
+          </div>
+        </section>
+
+        <section className="contact section-shell" id="contact" aria-labelledby="contact-title">
+          <div className="contact-signal" aria-hidden="true"><span>Open channel</span><i /><i /><i /></div>
+          <div className="contact-copy">
+            <h2 id="contact-title">Have a real problem worth thinking through?</h2>
+            <p>I&apos;m interested in internships, early-career engineering roles, and collaborations around AI systems, product engineering, and applied machine learning.</p>
+          </div>
+          <div className="contact-actions">
+            <a className="contact-email" href={`mailto:${profile.email}`}><Mail aria-hidden="true" size={20} />{profile.email}</a>
+            <a href={profile.linkedin} target="_blank" rel="noreferrer"><Linkedin aria-hidden="true" size={18} />LinkedIn <ExternalArrow /></a>
+            <a href={profile.github} target="_blank" rel="noreferrer"><Github aria-hidden="true" size={18} />GitHub <ExternalArrow /></a>
+            <a href={profile.resume} target="_blank" rel="noreferrer"><Download aria-hidden="true" size={18} />Résumé</a>
+          </div>
+        </section>
+      </main>
+
+      <footer className="site-footer section-shell">
+        <p>Designed and built around evidence from Yashmit&apos;s current portfolio and résumé.</p>
+        <a href="#arrival">Return to the decision core ↑</a>
+      </footer>
+    </>
   );
 }

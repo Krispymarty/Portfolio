@@ -57,13 +57,14 @@ export function ContactSection() {
             <FaGithub size={20} /> GitHub
           </Link>
 
-          <Link
+          <a
             href="/resume.pdf"
             target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-3 px-8 py-4 bg-surface border border-border text-text-primary font-bold rounded-xl hover:bg-surface/80 hover:border-text-secondary/50 transition-all text-lg backdrop-blur-md"
           >
             <FileText size={20} className="text-accent" /> Resume <ArrowRight size={16} className="ml-1 opacity-50" />
-          </Link>
+          </a>
         </motion.div>
       </div>
     </section>

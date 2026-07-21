@@ -1,8 +1,8 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import { motion } from "framer-motion";
 import { CheckCircle2, Target, Lightbulb, Server, GitPullRequest, ArrowRight, Activity, Zap } from "lucide-react";
-import Image from "next/image";
 
 export function LifeXPSection() {
   return (

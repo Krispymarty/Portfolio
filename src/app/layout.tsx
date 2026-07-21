@@ -1,45 +1,55 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { JetBrains_Mono, Manrope } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/navbar";
-import { ThemeProvider } from "@/components/theme-provider";
-import { CommandPalette } from "@/components/command-palette";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
+  display: "swap",
 });
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
 export const metadata: Metadata = {
   title: "Yashmit Singh — Builder's OS",
-  description: "AI Engineer & Product Builder. Shipping LifeXP, documenting engineering progress, and building with AI systems.",
+  description:
+    "Yashmit Singh is a computer-science student building explainable machine-learning systems and the product infrastructure around them.",
+  applicationName: "Yashmit Singh Portfolio",
+  authors: [{ name: "Yashmit Singh" }],
+  creator: "Yashmit Singh",
+  keywords: ["Yashmit Singh", "machine learning", "explainable AI", "computer vision", "FastAPI", "Next.js"],
+  openGraph: {
+    type: "profile",
+    title: "Yashmit Singh - From model accuracy to useful decisions",
+    description: "Explainable AI, real-time computer vision, and product engineering.",
+    firstName: "Yashmit",
+    lastName: "Singh",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Yashmit Singh - From model accuracy to useful decisions",
+    description: "Explainable AI, real-time computer vision, and product engineering.",
+  },
+  robots: { index: true, follow: true },
+  ...(siteUrl
+    ? {
+        metadataBase: new URL(siteUrl),
+        alternates: { canonical: "/" },
+      }
+    : {}),
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen flex flex-col font-sans antialiased bg-background text-text-primary transition-colors duration-300`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          <Navbar />
-          <CommandPalette />
-          <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 overflow-x-hidden">
-            {children}
-          </main>
-        </ThemeProvider>
+    <html lang="en">
+      <body className={`${manrope.variable} ${jetbrainsMono.variable}`}>
+        {children}
       </body>
     </html>
   );
