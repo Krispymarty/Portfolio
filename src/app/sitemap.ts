@@ -5,7 +5,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: siteUrl.replace(/\/$/, ""),
-      lastModified: new Date("2026-07-17"),
+      lastModified: new Date("2026-07-21"),
       changeFrequency: "monthly",
       priority: 1,
     },

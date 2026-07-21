@@ -1,75 +1,84 @@
 # Yashmit Singh - Portfolio
 
-An evidence-led portfolio for Yashmit Singh, focused on explainable AI, machine-learning systems, and product engineering. The site is built as a six-chapter narrative: identity, journey, capabilities, selected work, experience, and contact.
+An evidence-led, six-chapter portfolio for a computer-science student working across explainable AI, machine-learning systems, computer vision, and product engineering. A persistent procedural workstation turns the 3D layer into a narrative instrument: its monitor, character motion, data paths, and project modules respond to the chapter and selected case study.
 
-## Run locally
+## Local development
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`.
-
-Production checks:
+Open `http://localhost:3000`. Before shipping, run:
 
 ```bash
 npm run lint
 npx tsc --noEmit
 npm run build
-npm run start
+npm audit
+```
+
+For testing from another local hostname or device, set a comma-separated allowlist before starting Next.js:
+
+```bash
+NEXT_ALLOWED_DEV_ORIGINS=192.168.1.20 npm run dev
 ```
 
 ## Environment variables
 
-Define these in your local environment or deployment provider:
+- `NEXT_PUBLIC_SITE_URL`: canonical production origin used by metadata, sitemap, and structured data.
+- `NEXT_ALLOWED_DEV_ORIGINS`: optional development-only origin allowlist.
+- `GROQ_API_KEY`: required only by the retained legacy `/api/chat` route; the public narrative does not call it.
 
-- `NEXT_PUBLIC_SITE_URL` - canonical production origin, for example `https://example.com`. Used by the sitemap and metadata. Local fallback: `http://localhost:3000`.
-- `GROQ_API_KEY` - only required by the retained legacy `/api/chat` route. The redesigned public page does not call it.
+Never commit API keys. OriginKit is Codex tooling, not a runtime dependency.
 
-Never commit API keys. The OriginKit MCP registration is global Codex configuration and is not a runtime dependency of this site.
+## Editing content and projects
 
-## Content and project data
+`src/data/portfolio.ts` is the source of truth for biography, skills, metrics, projects, education, experience, and links. Keep evidence labels accurate: `resume-verified`, `portfolio-source`, or `in-progress`. Do not invent project URLs or results.
 
-Edit `src/data/portfolio.ts` to update biography, skills, metrics, projects, experience, education, and contact links. Each material claim includes a provenance label:
+Project presentation lives in:
 
-- `resume-verified` - supported by the supplied resume
-- `portfolio-source` - retained from the previous site and clearly scoped
-- `in-progress` - explicitly presented as current exploration
+- `src/components/project-lab.tsx`: accessible project tabs, keyboard behavior, and scene events.
+- `src/components/project-visuals.tsx`: explanatory diagrams, clearly labelled as diagrams rather than raw results.
+- `src/components/capability-map.tsx`: capability-to-evidence mapping.
 
-Project visuals in `src/components/project-visuals.tsx` are explanatory diagrams, not screenshots. Replace a diagram only with a real product screenshot or another clearly labelled system visualization. Add project-specific repository and live-demo URLs to `src/data/portfolio.ts` when available; current links intentionally point to the verified GitHub profile rather than inventing repository URLs.
+Replace a project diagram only with a real screenshot or another explicitly labelled explanatory view. Add verified repository/demo URLs in `src/data/portfolio.ts`.
 
-## Visual system and motion
+## The procedural workstation
 
-- Global design tokens, layout, responsive rules, and motion fallbacks: `src/app/globals.css`
-- Interactive layered decision model: `src/components/decision-core.tsx`
-- Persistent signal rail and chapter orchestration: `src/components/narrative-signal.tsx`
-- Procedural Three.js signal scene: `src/components/signal-scene.tsx`
-- Project, capability, and journey instruments: `src/components/project-lab.tsx`, `src/components/capability-map.tsx`, and `src/components/journey-sequence.tsx`
-- Page composition and structured data: `src/app/page.tsx`
-- Metadata and social image: `src/app/layout.tsx` and `src/app/opengraph-image.tsx`
+`src/components/workspace-scene.tsx` builds the desk, monitor, seated developer, lamp, notebook, server, frame, and cyan/orange data paths entirely from Three.js geometry and generated canvas textures. There is no downloaded 3D model, texture, or HDRI.
 
-The Signal Scene uses a small, procedural Three.js composition with no model, texture, or continuous render-loop download. It is dynamically loaded, caps device pixel ratio, renders only in response to interaction/state changes, pauses while the document is hidden, and disposes its resources on teardown. The CSS Decision Core remains visible as the WebGL fallback. `prefers-reduced-motion: reduce` removes the scene and motion while preserving the complete HTML narrative. To disable WebGL entirely, remove `SignalScene` from `narrative-signal.tsx`; no portfolio content depends on it.
+`src/components/decision-core.tsx` dynamically loads the scene and connects it to chapter and project events. The monitor content is generated by `useMonitorTexture`; edit `monitorProjects` to change project labels and metrics. The required named motion states are exported as `ANIM_CLIPS` and resolved in `resolveCharacterClip`: `initialize`, `idle_work`, `typing_loop`, `inspect_screen`, `use_mouse`, `check_notebook`, `project_switch`, `short_break`, and `contact_complete`.
 
-## Deployment
+To replace the procedural scene with a GLB later, keep the `WorkspaceSceneProps` contract (`chapter`, `projectId`, `quality`, `paused`, `reducedMotion`, `onModelReady`) and preserve the named motion-state semantics. Keep screen content project-driven and dispose loaded resources on teardown.
 
-The app uses the Next.js App Router and can deploy to Vercel or any Node host that supports `next build` and `next start`.
+## Performance, motion, and fallbacks
 
-1. Set `NEXT_PUBLIC_SITE_URL` to the final origin.
-2. Run the production checks above.
-3. Deploy the repository with Node.js 20 or newer.
-4. Verify `/robots.txt`, `/sitemap.xml`, and the generated Open Graph image.
+The scene selects one of three tiers:
 
-## Design documentation
+- `high`: DPR capped at 1.75, larger shadow/environment targets, contact shadow, 32 ambient particles.
+- `balanced`: DPR capped at 1.35, 1024 shadow map, reduced contact shadow, 12 particles.
+- `lightweight`: DPR 1, no scene/contact shadows, no particles, lower environment resolution.
 
-The project includes the audit trail and implementation rationale in `PRODUCT.md`, `DESIGN.md`, and `docs/`. Asset and attribution notes are in `docs/asset-credits.md`.
+Users can override the desktop tier from the scene controls. The render loop pauses when the document is hidden. `prefers-reduced-motion: reduce` removes the animated canvas and presents the static workstation schematic while preserving all HTML content. Mobile defaults to lightweight and shows the workstation in the arrival chapter only; the narrative, projects, metrics, and contact path never depend on WebGL. Missing WebGL also receives the same static fallback.
 
-## External assets and libraries
+## Accessibility and responsive behavior
 
-- Portrait and resume: supplied project assets in `public/`
-- Fonts: Manrope and JetBrains Mono, self-hosted at build time through `next/font`
-- Icons: Lucide React
-- Procedural 3D: Three.js
-- Interaction: React and CSS; Framer Motion remains for retained legacy components
+The page includes a skip link, semantic regions, labelled controls, visible focus states, minimum touch targets, keyboard-operable project tabs, `aria-live` feedback for clipboard actions, reduced-motion behavior, and HTML equivalents for all visual information. Breakpoints were checked at 360, 390, 768, 1024, 1366, 1440, and 1920 pixels.
 
-No stock imagery or unverified project screenshots are used.
+## SEO and deployment
+
+Metadata, Person JSON-LD, favicon, Open Graph image, robots, and sitemap are in `src/app/`. Set `NEXT_PUBLIC_SITE_URL`, run the production checks, then deploy to Vercel or any Node host supporting Next.js 16 and Node 20+.
+
+After deployment, verify `/robots.txt`, `/sitemap.xml`, `/opengraph-image`, the resume link, email action, and external profile links on the production origin.
+
+## Design and audit trail
+
+- `AGENTS.md`: repository working rules.
+- `design.md`: visual and interaction system.
+- `docs/portfolio-purpose.md`: audience and positioning.
+- `docs/professional-improvement-audit.md`: initial audit.
+- `docs/visual-reference-principles.md`: reference analysis.
+- `docs/interaction-storyboard.md`: chapter/scene behavior.
+- `docs/final-professional-audit.md`: completed verification.
+- `docs/asset-credits.md`: asset and attribution record.

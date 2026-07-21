@@ -1,18 +1,16 @@
-# Asset and Licence Credits
+# Asset and License Credits
 
-## Local personal assets
+## Personal assets
 
-- `public/profile.jpg` — portrait supplied with the original portfolio. Ownership/licence is assumed to belong to the portfolio owner; confirm before public deployment if the photo was produced by a third party.
-- `public/resume.pdf` — résumé supplied with the original portfolio; personal document owned by Yashmit Singh.
+- `public/profile.jpg`: portrait supplied with the portfolio. Confirm third-party usage rights before public deployment if the owner did not create it.
+- `public/resume.pdf`: personal resume supplied by Yashmit Singh.
 
-## External code and assets
+## 3D and visual assets
 
-- No Spline Community asset is used.
-- No OriginKit component is used.
-- The signal scene is original procedural geometry built with Three.js; it uses no external model, texture, HDRI, or Spline asset.
-- No stock photography or external texture is used in the replacement.
-- The removed original implementation referenced `transparenttextures.com/patterns/cubes.png`; the replacement does not retain that dependency.
+The workstation is original procedural geometry in `src/components/workspace-scene.tsx`. The desk, monitor, seated character, chair, lamp, notebook, server, frame, data paths, monitor interface, and lighting use generated geometry/materials only. No GLB, external texture, stock image, HDRI, Spline Community asset, or OriginKit component is shipped.
+
+Bruno Simon, Lusion, and Gufram/Awwwards were reviewed as interaction references only; no code or asset was copied. Project plots are original explanatory SVG/HTML diagrams based on documented project outcomes and are labelled as such.
 
 ## Libraries
 
-Runtime libraries and their licences remain listed through `package.json`/`package-lock.json`. The replacement uses Next.js, React, Three.js, Tailwind CSS, and a narrowed subset of the existing UI dependencies. No external attribution-bearing visual asset is introduced.
+Runtime dependencies and their licenses are tracked in `package.json` and `package-lock.json`. Primary visual/runtime libraries are Next.js, React, Three.js, React Three Fiber, Drei, Lucide React, React Icons, and Framer Motion.

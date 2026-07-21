@@ -12,6 +12,7 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "stylized-3d-developer-workspace/**",
   ]),
 ]);
 

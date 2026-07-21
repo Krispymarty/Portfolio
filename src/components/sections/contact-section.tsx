@@ -18,7 +18,7 @@ export function ContactSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-5xl md:text-7xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-white to-text-secondary mb-8">
+          <h2 className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-8">
             Let&apos;s Build Something Meaningful.
           </h2>
           

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability, react-hooks/purity */
 import { ContactShadows, Environment, Lightformer, PerspectiveCamera, RoundedBox } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
@@ -19,8 +20,14 @@ type WorkspaceMaterials = {
   brushedRail: THREE.MeshStandardMaterial;
 };
 
+export type SceneQuality = "high" | "balanced" | "lightweight";
+export type ProjectSceneId = "fraud-detection" | "weapon-detection" | "lifexp";
+
 type WorkspaceSceneProps = {
   chapter: number;
+  projectId: ProjectSceneId;
+  quality: SceneQuality;
+  paused: boolean;
   reducedMotion: boolean;
   onModelReady: (model: THREE.Group | null) => void;
 };
@@ -53,9 +60,9 @@ export const ANIM_CLIPS = [
   "initialize",
   "typing_loop",
   "inspect_screen",
-  "use_mouse_or_control",
-  "write_notebook",
-  "stretch_break",
+  "use_mouse",
+  "check_notebook",
+  "short_break",
   "skills_activate",
   "project_switch",
   "experience_integrate",
@@ -75,148 +82,125 @@ function dampValue(current: number, target: number, lambda: number, delta: numbe
 // Procedural Canvas Texture Generator for IDE / Code Editor Screen
 // ────────────────────────────────────────────────────────────────────────────────
 
-function useProceduralIDETexture() {
-  const canvasTexture = useMemo(() => {
+const monitorProjects: Record<ProjectSceneId, { title: string; metric: string; detail: string }> = {
+  "fraud-detection": {
+    title: "FRAUD DECISION",
+    metric: "0.833 PR-AUC · 90.9% precision",
+    detail: "Threshold → explanation → review",
+  },
+  "weapon-detection": {
+    title: "VISION INFERENCE",
+    metric: "91.5% mAP@0.5 · 88.0% recall",
+    detail: "Camera → YOLOv8 → alert",
+  },
+  lifexp: {
+    title: "LIFEXP / ACTIVE BUILD",
+    metric: "Next.js · FastAPI · PostgreSQL",
+    detail: "Progress → planned recommendation",
+  },
+};
+
+function useMonitorTexture(chapter: number, projectId: ProjectSceneId) {
+  const bundle = useMemo(() => {
     const canvas = document.createElement("canvas");
     canvas.width = 1024;
     canvas.height = 512;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return new THREE.Texture();
-
-    // Theme color base
-    ctx.fillStyle = "#0c1316";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Sidebar panel divider
-    ctx.strokeStyle = "rgba(255,255,255,0.06)";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(180, 0);
-    ctx.lineTo(180, canvas.height);
-    ctx.stroke();
-
-    // Sidebar: file tree mock structure
-    ctx.font = "bold 13px ui-monospace, monospace";
-    ctx.fillStyle = "#4a6c75";
-    ctx.fillText("EXPLORER: STACKFORM", 18, 30);
-
-    const files = [
-      "▾ src",
-      "  ▾ components",
-      "    WorkspaceScene.tsx",
-      "    PortfolioOverlay.tsx",
-      "  ▾ styles",
-      "    index.css",
-      "  App.tsx",
-      "  main.tsx",
-      "package.json",
-    ];
-
-    files.forEach((file, index) => {
-      ctx.fillStyle = file.includes("WorkspaceScene") ? "#81b99a" : file.includes("▾") ? "#6d8e96" : "#4f6c75";
-      ctx.fillText(file, 22, 65 + index * 24);
-    });
-
-    // Editor Header tab
-    ctx.fillStyle = "#121d21";
-    ctx.fillRect(180, 0, canvas.width - 180, 40);
-    ctx.fillStyle = "#d7d4ca";
-    ctx.fillText("WorkspaceScene.tsx", 205, 25);
-    ctx.fillStyle = "#e07a5f";
-    ctx.fillText("•", 335, 25);
-
-    // Editor tab lower indicator line
-    ctx.fillStyle = "#2a9d8f";
-    ctx.fillRect(180, 38, 175, 2);
-
-    // Editor Area: lines of code
-    const mockCodeLines = [
-      "import { Canvas, useFrame } from '@react-three/fiber';",
-      "import { RoundedBox } from '@react-three/drei';",
-      "",
-      "export default function WorkspaceScene() {",
-      "  const materials = useWorkspaceMaterials();",
-      "  const isTyping = chapter >= 1 && chapter <= 4;",
-      "",
-      "  // Synchronize developer posture & breathing loop",
-      "  useFrame(({ clock }, delta) => {",
-      "    const t = clock.elapsedTime;",
-      "    pelvis.position.y = Math.sin(t * 0.6) * 0.005;",
-      "    torso.rotation.x = Math.sin(t * 0.65) * 0.006;",
-      "  });",
-      "",
-      "  return <WorkstationBase materials={materials} />;",
-      "}",
-    ];
-
-    ctx.font = "12px ui-monospace, monospace";
-    mockCodeLines.forEach((line, index) => {
-      const y = 80 + index * 24;
-
-      // Line numbers
-      ctx.fillStyle = "#334c54";
-      ctx.fillText(String(index + 1).padStart(2, "0"), 200, y);
-
-      // Syntax Highlight Logic (Simple match-based splits)
-      let x = 230;
-      const tokens = line.split(/(\s+|\(|\)|\{|\}|<|>|;|=|\/)/);
-      tokens.forEach((token) => {
-        if (/^(export|default|function|const|let|return|import|from|class)$/.test(token)) {
-          ctx.fillStyle = "#e07a5f"; // Keywords
-        } else if (/^[A-Z]/.test(token)) {
-          ctx.fillStyle = "#f4a261"; // Classes / Types
-        } else if (/^(\/\/.*)$/.test(token)) {
-          ctx.fillStyle = "#4a6c75"; // Comments
-        } else if (/^['"].*['"]$/.test(token)) {
-          ctx.fillStyle = "#e9c46a"; // Strings
-        } else if (/^(\(|\)|\{|\}|<|>|;|=)$/.test(token)) {
-          ctx.fillStyle = "#8d99ae"; // Punctuation / Operators
-        } else {
-          ctx.fillStyle = "#d7d4ca"; // Standard text
-        }
-        ctx.fillText(token, x, y);
-        x += ctx.measureText(token).width;
-      });
-    });
-
-    // Console output / status panel at bottom right
-    ctx.fillStyle = "#0a0f12";
-    ctx.fillRect(720, 280, 270, 200);
-    ctx.strokeStyle = "rgba(42,157,143,0.3)";
-    ctx.strokeRect(720, 280, 270, 200);
-
-    ctx.fillStyle = "#2a9d8f";
-    ctx.fillText("▾ CONSOLE: SYSTEM STATUS", 735, 305);
-
-    ctx.fillStyle = "#6d8e96";
-    ctx.fillText("> npm run dev", 735, 335);
-    ctx.fillStyle = "#d7d4ca";
-    ctx.fillText("✓ vite v7.3.2 ready", 735, 360);
-    ctx.fillText("✓ workspace_rig_root ready", 735, 385);
-    ctx.fillStyle = "#e07a5f";
-    ctx.fillText("⚠ memory footprint optimal", 735, 410);
-
-    // Live active visual graph (CPU / Network pulse mockup)
-    ctx.strokeStyle = "#e07a5f";
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(740, 460);
-    ctx.bezierCurveTo(770, 440, 790, 470, 820, 450);
-    ctx.bezierCurveTo(850, 430, 870, 465, 900, 440);
-    ctx.bezierCurveTo(930, 415, 950, 455, 970, 430);
-    ctx.stroke();
-
     const texture = new THREE.CanvasTexture(canvas);
     texture.minFilter = THREE.LinearFilter;
     texture.wrapS = THREE.ClampToEdgeWrapping;
     texture.wrapT = THREE.ClampToEdgeWrapping;
-    return texture;
+    texture.colorSpace = THREE.SRGBColorSpace;
+    return { canvas, texture };
   }, []);
 
-  return canvasTexture;
-}
+  useEffect(() => {
+    const ctx = bundle.canvas.getContext("2d");
+    if (!ctx) return;
 
-// ────────────────────────────────────────────────────────────────────────────────
+    const screens = [
+      { label: "SYSTEM DORMANT", title: "Signal awaiting input", detail: "Workstation offline" },
+      { label: "JOURNEY / FOUNDATIONS", title: "Learning becomes structure", detail: "CS foundations → systems → applied engineering" },
+      { label: "CAPABILITY GRAPH", title: "Connections, not collections", detail: "Model · data · inference · product" },
+      { label: monitorProjects[projectId].title, title: monitorProjects[projectId].metric, detail: monitorProjects[projectId].detail },
+      { label: "EXPERIENCE / INTEGRATION", title: "Capability compounds", detail: "Learning + delivery + leadership" },
+      { label: "OPEN CHANNEL", title: "20yashmitsingh@gmail.com", detail: "Internships · engineering · collaboration" },
+    ] as const;
+    const screen = screens[chapter] ?? screens[1];
+    const cyan = "#6faeb0";
+    const orange = "#d28a52";
+
+    ctx.clearRect(0, 0, bundle.canvas.width, bundle.canvas.height);
+    ctx.fillStyle = "#0f1719";
+    ctx.fillRect(0, 0, bundle.canvas.width, bundle.canvas.height);
+
+    ctx.fillStyle = "#162226";
+    ctx.fillRect(0, 0, 176, bundle.canvas.height);
+    ctx.fillStyle = "#294047";
+    ctx.fillRect(175, 0, 2, bundle.canvas.height);
+
+    ctx.font = "600 15px ui-monospace, monospace";
+    ctx.fillStyle = cyan;
+    ctx.fillText("YASHMIT / WORKSPACE", 24, 42);
+    ["ORIGIN", "JOURNEY", "CAPABILITIES", "PROJECTS", "EXPERIENCE", "CONTACT"].forEach((item, index) => {
+      ctx.fillStyle = index === chapter ? "#e6e0d4" : "#597078";
+      ctx.fillText(item, 24, 92 + index * 48);
+      if (index === chapter) {
+        ctx.fillStyle = chapter === 3 ? orange : cyan;
+        ctx.fillRect(12, 78 + index * 48, 3, 24);
+      }
+    });
+
+    ctx.fillStyle = "#111d20";
+    ctx.fillRect(177, 0, 847, 62);
+    ctx.fillStyle = chapter === 3 ? orange : cyan;
+    ctx.fillRect(177, 60, 847, 2);
+    ctx.font = "600 16px ui-monospace, monospace";
+    ctx.fillText(screen.label, 216, 38);
+
+    ctx.fillStyle = "#e6e0d4";
+    ctx.font = "700 34px system-ui, sans-serif";
+    ctx.fillText(screen.title, 216, 132);
+
+    ctx.fillStyle = "#91a3a6";
+    ctx.font = "500 18px system-ui, sans-serif";
+    ctx.fillText(screen.detail, 216, 174);
+
+    const graphColor = chapter === 3 ? orange : cyan;
+    ctx.strokeStyle = graphColor;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(226, 314);
+    ctx.bezierCurveTo(330, 228, 388, 374, 500, 286);
+    ctx.bezierCurveTo(602, 206, 674, 354, 786, 258);
+    ctx.bezierCurveTo(850, 214, 902, 244, 964, 202);
+    ctx.stroke();
+
+    [226, 500, 786, 964].forEach((x, index) => {
+      const y = [314, 286, 258, 202][index];
+      ctx.fillStyle = "#0f1719";
+      ctx.strokeStyle = index === 3 ? orange : cyan;
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(x, y, 9, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+    });
+
+    ctx.fillStyle = "#24363c";
+    ctx.fillRect(216, 412, 748, 1);
+    ctx.font = "500 13px ui-monospace, monospace";
+    ctx.fillStyle = "#60787f";
+    ctx.fillText("CONTENT MIRRORED IN ACCESSIBLE HTML", 216, 454);
+    ctx.fillStyle = chapter === 5 ? orange : cyan;
+    ctx.fillText(String(chapter + 1).padStart(2, "0") + " / 06", 902, 454);
+
+    bundle.texture.needsUpdate = true;
+  }, [bundle, chapter, projectId]);
+
+  useEffect(() => () => bundle.texture.dispose(), [bundle]);
+
+  return bundle.texture;
+}
 // Low-Poly Geometry Helpers
 // ────────────────────────────────────────────────────────────────────────────────
 
@@ -593,10 +577,12 @@ function PrimaryMonitor({
 function ProjectModules({
   materials,
   chapter,
+  projectId,
   reducedMotion,
 }: {
   materials: WorkspaceMaterials;
   chapter: number;
+  projectId: ProjectSceneId;
   reducedMotion: boolean;
 }) {
   const moduleRef = useRef<THREE.Group>(null);
@@ -606,7 +592,8 @@ function ProjectModules({
     if (!moduleRef.current) return;
 
     const rotTargets = [-0.12, -0.12, -0.16, -0.46, -0.28, -0.12];
-    const angle = rotTargets[chapter] ?? -0.12;
+    const projectOffset = projectId === "weapon-detection" ? -0.05 : projectId === "lifexp" ? 0.04 : 0;
+    const angle = (rotTargets[chapter] ?? -0.12) + (chapter === 3 ? projectOffset : 0);
     moduleRef.current.rotation.y = dampValue(
       moduleRef.current.rotation.y,
       angle,
@@ -922,13 +909,41 @@ function DeskLamp({
 // Developer Figure Pass
 // ────────────────────────────────────────────────────────────────────────────────
 
+type CharacterMotionClip = (typeof ANIM_CLIPS)[number];
+
+function resolveCharacterClip(
+  chapter: number,
+  elapsed: number,
+  sinceChapterChange: number,
+  sinceProjectSwitch: number,
+): CharacterMotionClip {
+  if (chapter > 1 && sinceChapterChange < 0.24) return "reset";
+  if (chapter === 0) return "idle_work";
+  if (chapter === 1) return sinceChapterChange < 1.15 ? "initialize" : "typing_loop";
+  if (chapter === 2) {
+    const cycle = elapsed % 13;
+    if (cycle < 2.2) return "inspect_screen";
+    if (cycle > 10.8) return "short_break";
+    return "typing_loop";
+  }
+  if (chapter === 3) return sinceProjectSwitch < 1.1 ? "project_switch" : "use_mouse";
+  if (chapter === 4) {
+    const cycle = elapsed % 15;
+    if (cycle < 2.6) return "check_notebook";
+    if (cycle > 12.6) return "short_break";
+    return "typing_loop";
+  }
+  return "contact_complete";
+}
 function DeveloperFigure({
   materials,
   chapter,
+  projectId,
   reducedMotion,
 }: {
   materials: WorkspaceMaterials;
   chapter: number;
+  projectId: ProjectSceneId;
   reducedMotion: boolean;
 }) {
   const torsoRef = useRef<THREE.Group>(null);
@@ -936,14 +951,21 @@ function DeveloperFigure({
   const leftHandRef = useRef<THREE.Mesh>(null);
   const rightHandRef = useRef<THREE.Mesh>(null);
   const pelvisRef = useRef<THREE.Group>(null);
+  const motionStateRef = useRef<THREE.Group>(null);
+  const chapterStartedAt = useRef(0);
+  const projectStartedAt = useRef(0);
+
+  useEffect(() => { chapterStartedAt.current = Date.now(); }, [chapter]);
+  useEffect(() => { projectStartedAt.current = Date.now(); }, [projectId]);
 
   // States
   const isDormant = chapter === 0;
-  const isTyping = chapter >= 1 && chapter <= 4;
-  const isProject = chapter === 3;
   const isContact = chapter === 5;
 
   useFrame(({ clock }, delta) => {
+    const now = Date.now();
+    const clip = reducedMotion ? "idle_work" : resolveCharacterClip(chapter, clock.elapsedTime, (now - chapterStartedAt.current) / 1000, (now - projectStartedAt.current) / 1000);
+    if (motionStateRef.current) motionStateRef.current.name = `character_motion_${clip}`;
     // 1. Pelvis breathing
     if (pelvisRef.current) {
       const breath = reducedMotion ? 0 : Math.sin(clock.elapsedTime * 0.6) * 0.005;
@@ -952,15 +974,15 @@ function DeveloperFigure({
 
     // 2. Torso posture leaning toward keyboard
     if (torsoRef.current) {
-      const leanTarget = isDormant ? 0.03 : isContact ? -0.04 : isProject ? 0.12 : 0.08;
+      const leanTarget = clip === "short_break" ? -0.09 : clip === "contact_complete" ? -0.05 : clip === "inspect_screen" ? 0.15 : clip === "project_switch" || clip === "use_mouse" ? 0.11 : isDormant ? 0.03 : 0.08;
       const sway = reducedMotion ? 0 : Math.sin(clock.elapsedTime * 0.65) * 0.006;
       torsoRef.current.rotation.x = dampValue(torsoRef.current.rotation.x, leanTarget + sway, reducedMotion ? 50 : 3.0, delta);
     }
 
     // 3. Head pitch and yaw
     if (headRef.current) {
-      const pitchTarget = isDormant ? 0.14 : isContact ? -0.02 : isProject ? -0.05 : -0.08;
-      const yawTarget = isProject ? -0.22 : isContact ? 0.06 : 0;
+      const pitchTarget = clip === "initialize" ? -0.14 : clip === "inspect_screen" ? -0.12 : clip === "short_break" ? 0.05 : isDormant ? 0.14 : isContact ? -0.02 : -0.08;
+      const yawTarget = clip === "check_notebook" ? 0.28 : clip === "use_mouse" || clip === "project_switch" ? -0.22 : isContact ? 0.06 : 0;
       const headSwayX = reducedMotion ? 0 : Math.sin(clock.elapsedTime * 0.4) * 0.010;
       const headSwayY = reducedMotion ? 0 : Math.sin(clock.elapsedTime * 0.45) * 0.008;
 
@@ -968,26 +990,36 @@ function DeveloperFigure({
       headRef.current.rotation.y = dampValue(headRef.current.rotation.y, yawTarget + headSwayY, reducedMotion ? 50 : 3.0, delta);
     }
 
-    // 4. Typing Animation: hands tap vertically over keyboard surface
+    // 4. Named hand clips stay anchored to the seated rig.
     if (leftHandRef.current && rightHandRef.current) {
-      if (isTyping && !reducedMotion) {
-        const cycle = clock.elapsedTime;
-        const leftPhase = (cycle * 2.1) % 4.0;
-        const rightPhase = (cycle * 2.0 + 1.6) % 4.0;
+      const typing = clip === "typing_loop";
+      const cycle = clock.elapsedTime;
+      const leftPhase = (cycle * 2.1) % 4.0;
+      const rightPhase = (cycle * 2.0 + 1.6) % 4.0;
+      const leftTap = typing && leftPhase >= 1.2 && leftPhase < 1.6
+        ? Math.sin((Math.PI / 2) * ((leftPhase - 1.2) / 0.4)) * 0.018
+        : 0;
+      const rightTap = typing && rightPhase >= 1.2 && rightPhase < 1.6
+        ? Math.sin((Math.PI / 2) * ((rightPhase - 1.2) / 0.4)) * 0.016
+        : 0;
 
-        const leftDown = leftPhase >= 1.2 && leftPhase < 1.6 ? 1 : 0;
-        const leftTap = (leftDown ? Math.sin((Math.PI / 2) * ((leftPhase - 1.2) / 0.4)) : 0) * 0.018;
+      const leftTarget = {
+        x: clip === "check_notebook" ? 0.02 : -0.12,
+        y: clip === "short_break" || clip === "contact_complete" ? 0.50 : 0.55 + leftTap,
+        z: clip === "short_break" ? -0.34 : -0.48,
+      };
+      const rightTarget = {
+        x: clip === "use_mouse" || clip === "project_switch" ? 0.31 : clip === "check_notebook" ? 0.38 : 0.12,
+        y: clip === "short_break" || clip === "contact_complete" ? 0.50 : clip === "check_notebook" ? 0.58 : 0.55 + rightTap,
+        z: clip === "use_mouse" || clip === "project_switch" ? -0.34 : clip === "check_notebook" ? -0.18 : clip === "short_break" ? -0.34 : -0.48,
+      };
 
-        const rightDown = rightPhase >= 1.2 && rightPhase < 1.6 ? 1 : 0;
-        const rightTap = (rightDown ? Math.sin((Math.PI / 2) * ((rightPhase - 1.2) / 0.4)) : 0) * 0.016;
-
-        leftHandRef.current.position.y = dampValue(leftHandRef.current.position.y, 0.55 + leftTap, 18, delta);
-        rightHandRef.current.position.y = dampValue(rightHandRef.current.position.y, 0.55 + rightTap, 18, delta);
-      } else {
-        const restY = isContact ? 0.52 : isDormant ? 0.50 : 0.54;
-        leftHandRef.current.position.y = dampValue(leftHandRef.current.position.y, restY, 6, delta);
-        rightHandRef.current.position.y = dampValue(rightHandRef.current.position.y, restY, 6, delta);
-      }
+      leftHandRef.current.position.x = dampValue(leftHandRef.current.position.x, leftTarget.x, 8, delta);
+      leftHandRef.current.position.y = dampValue(leftHandRef.current.position.y, leftTarget.y, 12, delta);
+      leftHandRef.current.position.z = dampValue(leftHandRef.current.position.z, leftTarget.z, 8, delta);
+      rightHandRef.current.position.x = dampValue(rightHandRef.current.position.x, rightTarget.x, 8, delta);
+      rightHandRef.current.position.y = dampValue(rightHandRef.current.position.y, rightTarget.y, 12, delta);
+      rightHandRef.current.position.z = dampValue(rightHandRef.current.position.z, rightTarget.z, 8, delta);
     }
   });
 
@@ -1021,7 +1053,7 @@ function DeveloperFigure({
       </group>
 
       {/* Developer Body Hierarchy */}
-      <group position={[0, 0, 0]} name="developer_body">
+      <group ref={motionStateRef} position={[0, 0, 0]} name="character_motion_idle_work">
         <group ref={pelvisRef} position={[0, 0.46, 0]} name="developer_pelvis">
           <group ref={torsoRef} position={[0, 0, 0]} name="developer_torso">
             {/* Torso Hoodie/Sweater */}
@@ -1434,8 +1466,8 @@ function OrangeDataPaths({
 // Materials
 // ────────────────────────────────────────────────────────────────────────────────
 
-function useWorkspaceMaterials() {
-  const ideTexture = useProceduralIDETexture();
+function useWorkspaceMaterials(chapter: number, projectId: ProjectSceneId) {
+  const ideTexture = useMonitorTexture(chapter, projectId);
 
   const materials = useMemo<WorkspaceMaterials>(
     () => ({
@@ -1536,8 +1568,8 @@ function CameraRig({ chapter, reducedMotion }: { chapter: number; reducedMotion:
 // Ambient Particle Dust System
 // ────────────────────────────────────────────────────────────────────────────────
 
-function WorkspaceParticles() {
-  const count = 45;
+function WorkspaceParticles({ quality }: { quality: SceneQuality }) {
+  const count = quality === "high" ? 32 : quality === "balanced" ? 12 : 0;
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
@@ -1546,7 +1578,7 @@ function WorkspaceParticles() {
       arr[i * 3 + 2] = (Math.random() - 0.5) * 4.0; // Z depth
     }
     return arr;
-  }, []);
+  }, [count]);
 
   const pointsRef = useRef<THREE.Points>(null);
 
@@ -1589,10 +1621,10 @@ function WorkspaceParticles() {
 // Master model orchestrator
 // ────────────────────────────────────────────────────────────────────────────────
 
-function WorkspaceModel({ chapter, reducedMotion, onModelReady }: WorkspaceSceneProps) {
+function WorkspaceModel({ chapter, projectId, quality, reducedMotion, onModelReady }: WorkspaceSceneProps) {
   const modelRef = useRef<THREE.Group>(null);
   const presentationRef = useRef<THREE.Group>(null);
-  const materials = useWorkspaceMaterials();
+  const materials = useWorkspaceMaterials(chapter, projectId);
   const { size, pointer } = useThree();
 
   useEffect(() => {
@@ -1666,12 +1698,12 @@ function WorkspaceModel({ chapter, reducedMotion, onModelReady }: WorkspaceScene
         <WorkstationBase materials={materials} chapter={chapter} />
         <MainDesk materials={materials} />
         <PrimaryMonitor materials={materials} chapter={chapter} reducedMotion={reducedMotion} />
-        <ProjectModules materials={materials} chapter={chapter} reducedMotion={reducedMotion} />
+        <ProjectModules materials={materials} chapter={chapter} projectId={projectId} reducedMotion={reducedMotion} />
         <Keyboard materials={materials} chapter={chapter} />
         <ServerModule materials={materials} chapter={chapter} />
         <Books materials={materials} chapter={chapter} />
         <DeskLamp materials={materials} chapter={chapter} reducedMotion={reducedMotion} />
-        <DeveloperFigure materials={materials} chapter={chapter} reducedMotion={reducedMotion} />
+        <DeveloperFigure materials={materials} chapter={chapter} projectId={projectId} reducedMotion={reducedMotion} />
         <RearComputationalFrame
           materials={materials}
           chapter={chapter}
@@ -1679,7 +1711,7 @@ function WorkspaceModel({ chapter, reducedMotion, onModelReady }: WorkspaceScene
         />
         <CyanDataPaths materials={materials} chapter={chapter} reducedMotion={reducedMotion} />
         <OrangeDataPaths materials={materials} chapter={chapter} reducedMotion={reducedMotion} />
-        <WorkspaceParticles />
+        <WorkspaceParticles quality={quality} />
       </group>
     </group>
   );
@@ -1692,15 +1724,16 @@ function WorkspaceModel({ chapter, reducedMotion, onModelReady }: WorkspaceScene
 export default function WorkspaceScene(props: WorkspaceSceneProps) {
   return (
     <Canvas
-      dpr={[1, 2]}
+      dpr={props.quality === "high" ? [1, 1.75] : props.quality === "balanced" ? [1, 1.35] : 1}
+      frameloop={props.paused ? "never" : "always"}
       gl={{
-        antialias: true,
+        antialias: props.quality !== "lightweight",
         alpha: true,
         powerPreference: "high-performance",
         toneMapping: THREE.ACESFilmicToneMapping,
         toneMappingExposure: 1.05,
       }}
-      shadows="soft"
+      shadows={props.quality !== "lightweight"}
       performance={{ min: 0.5 }}
     >
       <PerspectiveCamera makeDefault position={[6.2, 4.15, 8.65]} fov={33} near={0.1} far={60} />
@@ -1715,8 +1748,8 @@ export default function WorkspaceScene(props: WorkspaceSceneProps) {
         position={[4.5, 7, 5.5]}
         intensity={2.4}
         color="#f1e2ca"
-        castShadow
-        shadow-mapSize={[2048, 2048]}
+        castShadow={props.quality !== "lightweight"}
+        shadow-mapSize={props.quality === "high" ? [1536, 1536] : [1024, 1024]}
         shadow-bias={-0.0004}
         shadow-normalBias={0.02}
         shadow-camera-far={18}
@@ -1733,7 +1766,7 @@ export default function WorkspaceScene(props: WorkspaceSceneProps) {
       <pointLight position={[-4, 1, 2]} intensity={0.7} distance={8} color="#447d82" />
 
       {/* Procedural studio environment for realistic matte-metal reflections (no external files) */}
-      <Environment resolution={128} frames={1}>
+      <Environment resolution={props.quality === "high" ? 96 : props.quality === "balanced" ? 48 : 32} frames={1}>
         <color attach="background" args={["#0a0d0e"]} />
         <Lightformer intensity={1.4} color="#f1e2ca" position={[4, 5, 4]} scale={[6, 6, 1]} />
         <Lightformer intensity={0.7} color="#5b8f95" position={[-5, 2, -4]} scale={[5, 5, 1]} />
@@ -1742,16 +1775,18 @@ export default function WorkspaceScene(props: WorkspaceSceneProps) {
 
       <WorkspaceModel {...props} />
 
-      {/* Grounded contact shadow */}
-      <ContactShadows
-        position={[-0.3, -1.16, 0]}
-        opacity={0.42}
-        scale={10}
-        blur={2.6}
-        far={5}
-        resolution={1024}
-        color="#020304"
-      />
+      {/* Grounded contact shadow is reserved for capable devices. */}
+      {props.quality !== "lightweight" && (
+        <ContactShadows
+          position={[-0.3, -1.16, 0]}
+          opacity={props.quality === "high" ? 0.38 : 0.28}
+          scale={10}
+          blur={3}
+          far={5}
+          resolution={props.quality === "high" ? 512 : 256}
+          color="#071012"
+        />
+      )}
     </Canvas>
   );
 }

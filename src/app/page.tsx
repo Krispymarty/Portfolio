@@ -1,13 +1,13 @@
 import Image from "next/image";
 import type { Metadata } from "next";
-import { ArrowUpRight, Download, Mail, MapPin } from "lucide-react";
-import { FaGithub as Github, FaLinkedin as Linkedin } from "react-icons/fa";
+import { ArrowUpRight, Download, MapPin } from "lucide-react";
 import profileImage from "../../public/profile.jpg";
 import { DecisionCore } from "@/components/decision-core";
 import { NarrativeSignal } from "@/components/narrative-signal";
 import { JourneySequence } from "@/components/journey-sequence";
 import { CapabilityMap } from "@/components/capability-map";
 import { ProjectLab } from "@/components/project-lab";
+import { ContactActions } from "@/components/contact-actions";
 import { portfolio } from "@/data/portfolio";
 
 export const metadata: Metadata = {
@@ -43,6 +43,7 @@ export default function Home() {
       />
       <a className="skip-link" href="#main-content">Skip to content</a>
       <NarrativeSignal />
+      <DecisionCore />
 
       <header className="site-header">
         <a className="site-mark" href="#arrival" aria-label="Yashmit Singh, back to the beginning">
@@ -55,7 +56,7 @@ export default function Home() {
           <a href="#experience">Experience</a>
         </nav>
         <a className="header-contact" href={`mailto:${profile.email}`}>
-          Start a conversation <ExternalArrow />
+          Contact <ExternalArrow />
         </a>
         <details className="mobile-menu">
           <summary aria-label="Open navigation">Menu</summary>
@@ -100,7 +101,9 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="hero-core"><DecisionCore /></div>
+          <div className="hero-core" aria-hidden="true">
+            <p className="scene-caption"><span>Live workstation</span><strong>One system, evolving with the work</strong></p>
+          </div>
           <p className="scroll-cue"><span /> Follow the decision path</p>
         </section>
 
@@ -160,12 +163,7 @@ export default function Home() {
             <h2 id="contact-title">Have a real problem worth thinking through?</h2>
             <p>I&apos;m interested in internships, early-career engineering roles, and collaborations around AI systems, product engineering, and applied machine learning.</p>
           </div>
-          <div className="contact-actions">
-            <a className="contact-email" href={`mailto:${profile.email}`}><Mail aria-hidden="true" size={20} />{profile.email}</a>
-            <a href={profile.linkedin} target="_blank" rel="noreferrer"><Linkedin aria-hidden="true" size={18} />LinkedIn <ExternalArrow /></a>
-            <a href={profile.github} target="_blank" rel="noreferrer"><Github aria-hidden="true" size={18} />GitHub <ExternalArrow /></a>
-            <a href={profile.resume} target="_blank" rel="noreferrer"><Download aria-hidden="true" size={18} />Résumé</a>
-          </div>
+          <ContactActions email={profile.email} github={profile.github} linkedin={profile.linkedin} resume={profile.resume} />
         </section>
       </main>
 
