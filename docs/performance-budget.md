@@ -26,6 +26,8 @@
 - Dispose materials on scene teardown.
 - Use one-time environment rendering (`frames={1}`).
 - Keep pan and zoom disabled; bounded orbit avoids rendering irrelevant world space.
+- Object camera transitions reuse the existing scene frame loop, stop after converging on their preset, and are cancelled immediately when the visitor starts orbiting.
+- The selection marker and object hotspots are short transform-only cues; they introduce no new renderer, texture request, external asset, or unbounded animation.
 - Do not autoplay audio. No audio is retained in this pass because it does not yet add enough value to justify payload and control complexity.
 
 ## Retention criteria for effects
@@ -53,3 +55,13 @@ Before release, record:
 ## Recorded production measurement
 
 The 22 July 2026 production build emitted 10 JavaScript chunks totaling 1.62 MB uncompressed on disk. The largest asynchronous chunk is 984.7 KB and contains the dynamically loaded real-time scene stack; the primary non-scene chunks are substantially smaller. This confirms that Three.js remains isolated from the initial server-rendered content path, while also identifying the scene chunk as the main future optimization target.
+
+
+## Cinematic budget
+
+- 384 WebP frames at 1280x720 total 9.20 MB, below the 40 MB target.
+- The decoded-frame cache holds at most 56 frames and releases evicted ImageBitmap resources.
+- Only frame changes repaint the canvas; interpolation stops when the target frame is reached.
+- The first 16 Initialization frames form the critical window. The visible readiness indicator clears after those requests settle; remaining frames use a four-request background queue plus chapter-predictive loading.
+- Mobile and low-memory devices use three H.264 files totaling approximately 1.10 MB.
+- Reduced motion decodes no sequence frames and runs no video or WebGL loop.

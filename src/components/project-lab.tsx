@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type KeyboardEvent } from "react";
+import { useState, type KeyboardEvent } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { portfolio } from "@/data/portfolio";
 import { FraudDecisionPlot, LifeXPSystem, VisionPipeline } from "@/components/project-visuals";
@@ -37,15 +37,6 @@ type ProjectId = keyof typeof projectControls;
 export function ProjectLab() {
   const [activeId, setActiveId] = useState<ProjectId>("fraud-detection");
   const [instrumentState, setInstrumentState] = useState(projectControls[activeId][0].id as string);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia("(max-width: 820px)");
-    const update = () => setIsMobile(media.matches);
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
-  }, []);
 
   const selectProject = (id: ProjectId) => {
     setActiveId(id);
@@ -109,7 +100,7 @@ export function ProjectLab() {
               id={`project-panel-${project.id}`}
               role="tabpanel"
               aria-labelledby={`project-tab-${project.id}`}
-              hidden={!isMobile && !active}
+              hidden={!active}
               data-active={active ? "true" : "false"}
               key={project.id}
             >
@@ -124,7 +115,16 @@ export function ProjectLab() {
                 </div>
               </header>
 
-              <p className="instrument-summary">{project.summary}</p>
+              <div className="instrument-brief">
+                <div>
+                  <span>Problem</span>
+                  <p>{project.problem}</p>
+                </div>
+                <div>
+                  <span>Key decision</span>
+                  <p>{project.decision}</p>
+                </div>
+              </div>
 
               <div className="instrument-body">
                 <div className="instrument-visual" data-state={active ? instrumentState : controls[0].id}>
@@ -133,34 +133,41 @@ export function ProjectLab() {
                   {id === "lifexp" && <LifeXPSystem />}
                 </div>
 
-                <div className="instrument-console">
-                  <p className="instrument-console__label">Inspect the system</p>
-                  <div className="instrument-controls" role="group" aria-label={`${project.name} instrument states`}>
-                    {controls.map((control, index) => (
-                      <button
-                        type="button"
-                        key={control.id}
-                        aria-pressed={instrumentState === control.id}
-                        onClick={() => setInstrumentState(control.id)}
-                        onFocus={() => setInstrumentState(control.id)}
-                      >
-                        <span>{String(index + 1).padStart(2, "0")}</span>
-                        <strong>{control.label}</strong>
-                        <small>{control.detail}</small>
-                      </button>
-                    ))}
-                  </div>
-
-                  <details className="project-story">
-                    <summary>Technical breakdown <span aria-hidden="true">+</span></summary>
+                <details className="project-story project-story--technical">
+                  <summary>Technical evidence <span aria-hidden="true">+</span></summary>
+                  <div className="project-story__content">
+                    <p className="instrument-console__label">Interact with the visualization</p>
+                    <div className="instrument-controls" role="group" aria-label={`${project.name} instrument states`}>
+                      {controls.map((control, index) => (
+                        <button
+                          type="button"
+                          key={control.id}
+                          aria-pressed={instrumentState === control.id}
+                          onClick={() => setInstrumentState(control.id)}
+                          onFocus={() => setInstrumentState(control.id)}
+                        >
+                          <span>{String(index + 1).padStart(2, "0")}</span>
+                          <strong>{control.label}</strong>
+                          <small>{control.detail}</small>
+                        </button>
+                      ))}
+                    </div>
                     <dl>
-                      <div><dt>Problem</dt><dd>{project.problem}</dd></div>
                       <div><dt>My contribution</dt><dd>{project.contribution}</dd></div>
-                      <div><dt>Key decision</dt><dd>{project.decision}</dd></div>
                       <div><dt>Notable challenge</dt><dd>{project.challenge}</dd></div>
                     </dl>
-                  </details>
-                </div>
+                    <div className="instrument-technical-footer">
+                      <ul aria-label={`${project.name} technology stack`}>
+                        {project.stack.map((item) => <li key={item}>{item}</li>)}
+                      </ul>
+                      {project.repository ? (
+                        <a href={project.repository} target="_blank" rel="noreferrer">
+                          GitHub context <ArrowUpRight aria-hidden="true" size={16} />
+                        </a>
+                      ) : <span>Repository link needed</span>}
+                    </div>
+                  </div>
+                </details>
               </div>
 
               <div className="instrument-outcome">
@@ -170,7 +177,7 @@ export function ProjectLab() {
                 </div>
                 {project.metrics.length > 0 && (
                   <ul aria-label={`${project.name} recorded metrics`}>
-                    {project.metrics.map((metric) => (
+                    {project.metrics.slice(0, 2).map((metric) => (
                       <li key={metric.label}>
                         <strong>{metric.value}</strong><span>{metric.label}</span>
                       </li>
@@ -179,16 +186,7 @@ export function ProjectLab() {
                 )}
               </div>
 
-              <footer className="instrument-footer">
-                <ul aria-label={`${project.name} technology stack`}>
-                  {project.stack.map((item) => <li key={item}>{item}</li>)}
-                </ul>
-                {project.repository ? (
-                  <a href={project.repository} target="_blank" rel="noreferrer">
-                    GitHub context <ArrowUpRight aria-hidden="true" size={16} />
-                  </a>
-                ) : <span>Repository link needed</span>}
-              </footer>
+
             </article>
           );
         })}

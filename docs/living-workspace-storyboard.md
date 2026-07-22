@@ -44,11 +44,11 @@ Platform and server modules settle into a more integrated configuration. Educati
 
 ### 06 — Contact / Transmit
 
-The scene resolves rather than escalating: both pathways align, the lamp brightens, and the character sits back. Email, LinkedIn, GitHub, and résumé remain direct HTML actions.
+The scene resolves rather than escalating: both pathways align, the lamp shade turns visibly amber, warm practical light spreads across the desk, and the character sits back. The semantic Contact surface returns to solid amber so email, LinkedIn, GitHub, and résumé remain immediately legible.
 
 ## Explore Mode
 
-Entering Explore Mode raises the workstation to an interaction layer without moving the visitor to another page. A visible object selector, inspector panel, Return to Guided Mode control, and Skip Experience link are always present.
+Entering Explore Mode raises the workstation to an interaction layer without moving the visitor to another page. A visible object selector, collapsible evidence deck, Exit Explore Mode control, and Skip Experience link remain available. The scene initializes in its complete workstation state even though it is lazy-mounted after the Guided startup event.
 
 - Monitor: projects and project-to-scene switching.
 - Server: APIs, data, deployment, and product engineering.
@@ -56,7 +56,7 @@ Entering Explore Mode raises the workstation to an interaction layer without mov
 - Computational frame: capability categories tied to evidence.
 - Lamp: concise current-focus material.
 
-Desktop supports damped, bounded orbit with no pan or zoom. Mobile uses predefined composition and touch selection only.
+Each object owns a restrained camera composition that keeps the wider workstation readable. Selection produces a short camera settle, two-tone target cue, and visible hotspot affordance; A/D, Arrow keys, and 1-5 move between objects. The evidence deck tracks how many workstation objects have been inspected in the current session. Desktop then permits damped, bounded orbit with no pan or zoom. Mobile uses the same predefined compositions and touch selection only.
 
 ## Motion grammar
 
@@ -68,3 +68,8 @@ Desktop supports damped, bounded orbit with no pan or zoom. Mobile uses predefin
 - Contact: light and path convergence.
 
 The system uses opacity, transforms, camera framing, material emission, and damped object state. It does not animate layout properties or apply one repeated fade-up treatment to every chapter.
+
+
+## Blender cinematic contract
+
+Guided Mode maps six semantic chapters to three rendered sequences: Initialization advances with the startup stages and then holds for Journey; Transformation runs forward for Capabilities and holds its applied project state for Work; Detail Journey runs forward for Experience and holds its calm final composition for Contact. Desktop draws numbered WebP frames to one decorative canvas. Mobile uses matching H.264 fallbacks and reduced motion uses posters. Explore Mode is the only state that mounts WebGL.

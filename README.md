@@ -80,11 +80,12 @@ After deployment, verify `/robots.txt`, `/sitemap.xml`, `/opengraph-image`, the 
 - `docs/professional-improvement-audit.md`: initial audit.
 - `docs/visual-reference-principles.md`: reference analysis.
 - `docs/interaction-storyboard.md`: chapter/scene behavior.
-- `docs/final-professional-audit.md`: completed verification.
+- `docs/final-professional-audit.md`: completed baseline verification.
+- `docs/main-portfolio-completion-audit.md`: six-chapter completion and cinematic rerender verification.
 - `docs/asset-credits.md`: asset and attribution record.
 ## Guided and Explore modes
 
-The workstation now supports two routes through the same evidence. Guided Mode follows the six scroll chapters. Explore Workspace opens a keyboard-accessible inspector for the monitor, server, notebook, computational frame, and lamp. Desktop orbit is bounded with pan/zoom disabled; mobile keeps a predefined composition and touch selection. Escape or Return to Guided Mode exits immediately, and Skip Experience links directly to the project case studies.
+The workstation now supports two routes through the same evidence. Guided Mode follows the six scroll chapters. Explore Workspace opens a keyboard-accessible inspector for the monitor, server, notebook, computational frame, and lamp. Desktop orbit is bounded with pan/zoom disabled; mobile keeps a predefined composition and touch selection. Explore opens as a focus-contained dialog; Escape or Return to Guided Mode exits immediately, restores the initiating control, and Skip Experience links directly to the project case studies.
 
 `WorkspaceSceneProps` now also carries `mode`, `selectedObject`, `allowRotation`, and `onSelect`. Keep these values owned by `DecisionCore` so canvas clicks, keyboard tabs, project controls, quality state, and semantic inspector content remain synchronized.
 
@@ -97,3 +98,32 @@ Supporting design documents:
 - `docs/exploration-interactions.md`
 - `docs/performance-budget.md`
 - `docs/final-reference-comparison.md`
+
+
+## Blender cinematic pipeline
+
+Guided Mode uses three Blender 5.2 image sequences on an event-driven canvas. The procedural Three.js workstation remains the explicitly activated Explore Mode and is not imported during normal guided browsing.
+
+Blender is provided by the Microsoft Store package. Invoke its registered alias, not the protected package executable:
+
+    C:\Users\Asus\AppData\Local\Microsoft\WindowsApps\blender-launcher.exe
+
+All paths, resolution, quality, and frame ranges live in blender/config.json. From the repository root:
+
+    $blender = 'C:\Users\Asus\AppData\Local\Microsoft\WindowsApps\blender-launcher.exe'
+    & $blender --factory-startup --background --python blender/scripts/prepare_scene.py
+    & $blender --background blender/working/workspace-cinematic.blend --python blender/scripts/pipeline.py -- inspect
+    & $blender --background blender/working/workspace-cinematic.blend --python blender/scripts/pipeline.py -- samples
+    & $blender --background blender/working/workspace-cinematic.blend --python blender/scripts/pipeline.py -- render
+    & $blender --background blender/working/workspace-cinematic.blend --python blender/scripts/pipeline.py -- export
+    python blender/scripts/validate_outputs.py
+
+Render samples and inspect blender/previews/ before every full batch. Sequence timing and frame count are controlled by the frame ranges in blender/config.json and the camera/object keys in blender/scripts/pipeline.py; update the matching counts in src/lib/cinematic/manifest.ts after rerendering.
+
+To replace the generated source later, preserve the object meanings, one-camera choreography, materials, compatible poses, and output contracts. Keep the replacement as blender/source/workspace-source.blend, generate a separate working copy, inspect it, then rerun samples before sequences.
+
+The canvas cover-fits one frame, maps active chapter progress to a clamped index, interpolates toward the target, and repaints only when the displayed frame changes. It loads 16 critical Initialization frames first, clears the readiness indicator as soon as that window settles, continues through a bounded four-request background queue, maintains a bounded decoded-frame cache, and retains the last valid frame during failures.
+
+"Explore workspace" dynamically imports React Three Fiber and pauses Guided Mode. Escape or either visible exit action unmounts Explore Mode. Test reduced motion through the operating-system preference or browser emulation; it must show static posters and semantic content without frame, video, or WebGL loops.
+
+Before deployment, regenerate and validate assets, run lint, TypeScript, the production build, the Impeccable detector, and npm audit, then verify the same static files are served from /cinematic/ and /models/.

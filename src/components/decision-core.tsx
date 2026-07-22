@@ -99,7 +99,12 @@ function supportsWebGL() {
   return typeof window.WebGLRenderingContext !== "undefined";
 }
 
-export function DecisionCore() {
+type DecisionCoreProps = {
+  initialMode?: "guided" | "explore";
+  onExit?: () => void;
+};
+
+export function DecisionCore({ initialMode = "guided", onExit }: DecisionCoreProps = {}) {
   const reducedMotion = useReducedMotion() ?? false;
   const experienceRef = useRef<HTMLElement>(null);
   const [chapterIndex, setChapterIndex] = useState(0);
@@ -110,13 +115,17 @@ export function DecisionCore() {
   const [sceneInView, setSceneInView] = useState(true);
   const [webglAvailable, setWebglAvailable] = useState(false);
   const [sceneReady, setSceneReady] = useState(false);
-  const [booted, setBooted] = useState(false);
-  const [startupStage, setStartupStage] = useState(0);
-  const [mode, setMode] = useState<"guided" | "explore">("guided");
+  const [booted, setBooted] = useState(initialMode === "explore");
+  const [startupStage, setStartupStage] = useState(initialMode === "explore" ? 5 : 0);
+  const [mode, setMode] = useState<"guided" | "explore">(initialMode);
   const [selectedObject, setSelectedObject] = useState<WorkspaceObjectId>("monitor");
   const [allowRotation, setAllowRotation] = useState(true);
+  const [inspectorCollapsed, setInspectorCollapsed] = useState(false);
+  const [hasExplored, setHasExplored] = useState(false);
+  const [visitedObjects, setVisitedObjects] = useState<Set<WorkspaceObjectId>>(() => new Set(["monitor"]));
   const chapter = booted ? (chapterStates[chapterIndex] ?? chapterStates[0]) : 0;
   const selectedDetail = workspaceObjects.find((item) => item.id === selectedObject) ?? workspaceObjects[0];
+  const visitedCount = visitedObjects.size;
 
   useEffect(() => {
     const initialize = window.setTimeout(() => {
@@ -151,7 +160,10 @@ export function DecisionCore() {
       }
     };
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setMode("guided");
+      if (event.key === "Escape") {
+        setMode("guided");
+        onExit?.();
+      }
     };
 
     const observer = new IntersectionObserver(([entry]) => setSceneInView(entry.isIntersecting), { threshold: 0.01 });
@@ -174,7 +186,7 @@ export function DecisionCore() {
       window.removeEventListener("keydown", handleEscape);
       document.removeEventListener("visibilitychange", handleVisibility);
     };
-  }, [qualityOverride]);
+  }, [onExit, qualityOverride]);
 
   const handleModelReady = useCallback((model: Group | null) => {
     if (model) setSceneReady(true);
@@ -183,7 +195,40 @@ export function DecisionCore() {
   const handleObjectSelect = useCallback((id: WorkspaceObjectId) => {
     setSelectedObject(id);
     setMode("explore");
+    setHasExplored(true);
+    setVisitedObjects((current) => {
+      const next = new Set(current);
+      next.add(id);
+      return next;
+    });
   }, []);
+
+  const selectRelativeObject = useCallback((direction: -1 | 1) => {
+    const index = workspaceObjects.findIndex((item) => item.id === selectedObject);
+    const next = workspaceObjects[(index + direction + workspaceObjects.length) % workspaceObjects.length].id;
+    handleObjectSelect(next);
+  }, [handleObjectSelect, selectedObject]);
+
+  useEffect(() => {
+    if (mode !== "explore") return;
+    const handleExploreKeys = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target?.closest("input, textarea, select, [role='tablist']")) return;
+      const previous = event.key === "ArrowLeft" || event.key.toLowerCase() === "a";
+      const next = event.key === "ArrowRight" || event.key.toLowerCase() === "d";
+      const digit = Number(event.key);
+      if (Number.isInteger(digit) && digit >= 1 && digit <= workspaceObjects.length) {
+        event.preventDefault();
+        handleObjectSelect(workspaceObjects[digit - 1].id);
+        return;
+      }
+      if (!previous && !next) return;
+      event.preventDefault();
+      selectRelativeObject(next ? 1 : -1);
+    };
+    window.addEventListener("keydown", handleExploreKeys);
+    return () => window.removeEventListener("keydown", handleExploreKeys);
+  }, [handleObjectSelect, mode, selectRelativeObject]);
 
   const handleObjectKeyDown = (event: ReactKeyboardEvent<HTMLButtonElement>, index: number) => {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
@@ -195,6 +240,12 @@ export function DecisionCore() {
         : (index + (event.key === "ArrowRight" ? 1 : -1) + workspaceObjects.length) % workspaceObjects.length;
     const next = workspaceObjects[nextIndex];
     setSelectedObject(next.id);
+    setHasExplored(true);
+    setVisitedObjects((current) => {
+      const visited = new Set(current);
+      visited.add(next.id);
+      return visited;
+    });
     window.requestAnimationFrame(() => document.getElementById(`workspace-tab-${next.id}`)?.focus());
   };
 
@@ -245,7 +296,7 @@ export function DecisionCore() {
       )}
 
       <div className="workspace-mode" role="group" aria-label="Workspace experience mode">
-        <button type="button" aria-pressed={mode === "guided"} onClick={() => setMode("guided")}>Guided</button>
+        <button type="button" aria-pressed={mode === "guided"} onClick={() => { setMode("guided"); onExit?.(); }}>Guided</button>
         <button type="button" aria-pressed={mode === "explore"} onClick={() => setMode("explore")}>Explore workspace</button>
       </div>
 
@@ -253,6 +304,13 @@ export function DecisionCore() {
         <span>{mode === "explore" ? selectedDetail.label : status.chapter}</span>
         <strong>{mode === "explore" ? selectedDetail.domain : chapterIndex === 3 ? status.project : "System"}</strong>
       </div>
+
+      {mode === "explore" && !hasExplored && (
+        <div className="workspace-explore-guide" aria-hidden="true">
+          <span>Select a workstation object</span>
+          <small>A / D, arrows, or 1-5</small>
+        </div>
+      )}
 
       <div className="quality-control" role="group" aria-label="3D scene quality">
         {qualityOptions.map((option) => (
@@ -270,7 +328,17 @@ export function DecisionCore() {
         ))}
       </div>
 
-      <section className="workspace-inspector" aria-label="Workspace object inspector" hidden={mode !== "explore"}>
+      <section className="workspace-inspector" aria-label="Workspace object inspector" hidden={mode !== "explore"} data-collapsed={inspectorCollapsed ? "true" : "false"}>
+        <div className="workspace-inspector__heading">
+          <span>{String(workspaceObjects.findIndex((item) => item.id === selectedObject) + 1).padStart(2, "0")} / {String(workspaceObjects.length).padStart(2, "0")}</span>
+          <button type="button" aria-expanded={!inspectorCollapsed} aria-controls="workspace-object-panel" onClick={() => setInspectorCollapsed((value) => !value)}>
+            {inspectorCollapsed ? "Show evidence" : "Minimize"}
+          </button>
+        </div>
+        <div className="workspace-progress" aria-label={`${visitedCount} of ${workspaceObjects.length} workspace objects inspected`}>
+          <span>Inspected</span>
+          <strong>{visitedCount}/{workspaceObjects.length}</strong>
+        </div>
         <div className="workspace-object-tabs" role="tablist" aria-label="Inspect workstation objects">
           {workspaceObjects.map((item) => (
             <button
@@ -281,14 +349,15 @@ export function DecisionCore() {
               aria-controls="workspace-object-panel"
               tabIndex={selectedObject === item.id ? 0 : -1}
               key={item.id}
-              onClick={() => setSelectedObject(item.id)}
+              data-visited={visitedObjects.has(item.id) ? "true" : "false"}
+              onClick={() => handleObjectSelect(item.id)}
               onKeyDown={(event) => handleObjectKeyDown(event, workspaceObjects.indexOf(item))}
             >
-              <span>{item.label}</span><small>{item.domain}</small>
+              <span>{item.label}</span><small>{workspaceObjects.indexOf(item) + 1}</small>
             </button>
           ))}
         </div>
-        <div id="workspace-object-panel" role="tabpanel" aria-labelledby={`workspace-tab-${selectedObject}`} aria-live="polite">
+        <div id="workspace-object-panel" role="tabpanel" aria-labelledby={`workspace-tab-${selectedObject}`} aria-live="polite" hidden={inspectorCollapsed}>
           <p>{selectedDetail.domain}</p>
           <h3>{selectedDetail.title}</h3>
           <p>{selectedDetail.summary}</p>
@@ -313,9 +382,9 @@ export function DecisionCore() {
           )}
           <a href={selectedDetail.href}>{selectedDetail.action}</a>
         </div>
-        <div className="workspace-inspector__footer">
-          <span>{allowRotation ? "Drag to orbit within limits · select an object to focus" : "Tap an object or use the controls"}</span>
-          <button type="button" onClick={() => setMode("guided")}>Return to guided mode</button>
+        <div className="workspace-inspector__footer" hidden={inspectorCollapsed}>
+          <span>{allowRotation ? "Drag to orbit within limits. A / D or 1-5 changes focus" : "Tap an object or use the numbered controls"}</span>
+          <button type="button" onClick={() => { setMode("guided"); onExit?.(); }}>Return to guided mode</button>
           <a href="#work">Skip experience</a>
         </div>
       </section>

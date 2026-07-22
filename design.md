@@ -59,7 +59,7 @@ Headings use balanced wrapping; prose uses pretty wrapping. No reveal may leave 
 - Section rhythm alternates compressed evidence chapters with larger narrative transitions.
 - Z-index: canvas 1, content 2, sticky 30, menu 40, focus/tooltip 50.
 
-The narrative order is Arrival, Identity, Journey, Capabilities, Projects, Experience, Contact. At least three chapters use different spatial structures: integrated hero, pinned growth trace, capability map, project instrument, and contact resolution.
+The six-chapter narrative order is Arrival with integrated identity, Journey, Capabilities, Projects, Experience, and Contact. At least three chapters use different spatial structures: integrated hero, pinned growth trace, capability map, project instrument, and contact resolution.
 
 ## Workstation behavior
 
@@ -114,3 +114,8 @@ Guided Story Mode is the default and owns chapter progression. Explore Mode is a
 The startup sequence coordinates the dormant scene with the hero copy. It completes within 2.6 seconds, can be dismissed by any primary input, and is never persisted across reloads. The settled identity remains mounted from first render.
 
 Audio is intentionally omitted until a lightweight opt-in sound demonstrably improves comprehension. Visual state and accessible labels may never depend on sound.
+
+
+## Blender cinematic layer
+
+The primary Guided experience is a fixed, decorative image-sequence canvas rendered from the same quiet computational workstation. Initialization uses cyan and practical light in separated beats; transformation resolves cyan capability relationships into orange project output; details uses a slow, right-weighted camera observation that protects the reading field. Semantic chapters remain above the canvas and never depend on baked text. Mobile uses video, reduced motion uses static posters, and explicit Explore Mode temporarily replaces the canvas with the bounded live workstation.

@@ -1,0 +1,1976 @@
+{
+  "blenderVersion": "5.2.0 LTS",
+  "scene": "Living Workspace Cinematic",
+  "collections": [
+    "Collection"
+  ],
+  "activeCamera": "cinematic_camera",
+  "cameras": [
+    "cinematic_camera"
+  ],
+  "lights": [
+    {
+      "name": "soft_key",
+      "type": "AREA",
+      "energy": 860.0
+    },
+    {
+      "name": "cyan_fill",
+      "type": "AREA",
+      "energy": 220.0
+    },
+    {
+      "name": "lamp_practical",
+      "type": "POINT",
+      "energy": 760.0
+    }
+  ],
+  "renderEngine": "BLENDER_EEVEE",
+  "world": "World",
+  "resolution": [
+    1280,
+    720
+  ],
+  "objects": [
+    {
+      "name": "graphite_platform",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.0,
+        0.4000000059604645,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "graphite_matte"
+      ]
+    },
+    {
+      "name": "desk_top",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.0,
+        0.0,
+        2.359999895095825
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "warm_grey_desk"
+      ]
+    },
+    {
+      "name": "desk_leg_-3.35_-1.15",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        -3.3499999046325684,
+        -1.149999976158142,
+        1.149999976158142
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "desk_leg_-3.35_1.15",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        -3.3499999046325684,
+        1.149999976158142,
+        1.149999976158142
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "desk_leg_3.35_-1.15",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        3.3499999046325684,
+        -1.149999976158142,
+        1.149999976158142
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "desk_leg_3.35_1.15",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        3.3499999046325684,
+        1.149999976158142,
+        1.149999976158142
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "monitor_body",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.20000000298023224,
+        0.800000011920929,
+        4.050000190734863
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "raised_graphite"
+      ]
+    },
+    {
+      "name": "primary_screen",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.20000000298023224,
+        0.6549999713897705,
+        4.059999942779541
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "monitor_screen"
+      ]
+    },
+    {
+      "name": "monitor_stem",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        0.20000000298023224,
+        0.8600000143051147,
+        2.7799999713897705
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "monitor_base",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.20000000298023224,
+        0.8199999928474426,
+        2.4800000190734863
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "keyboard",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.05000000074505806,
+        -0.8199999928474426,
+        2.5399999618530273
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "raised_graphite"
+      ]
+    },
+    {
+      "name": "key_0_0",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -1.1799999475479126,
+        -1.0800000429153442,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_0_1",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -0.9100000262260437,
+        -1.0800000429153442,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_0_2",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -0.6399999856948853,
+        -1.0800000429153442,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_0_3",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -0.3700000047683716,
+        -1.0800000429153442,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_0_4",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -0.10000000149011612,
+        -1.0800000429153442,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_0_5",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.17000000178813934,
+        -1.0800000429153442,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_0_6",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.4399999976158142,
+        -1.0800000429153442,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_0_7",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.7099999785423279,
+        -1.0800000429153442,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_0_8",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.9800000190734863,
+        -1.0800000429153442,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_0_9",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        1.25,
+        -1.0800000429153442,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_1_0",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -1.1799999475479126,
+        -0.8600000143051147,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_1_1",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -0.9100000262260437,
+        -0.8600000143051147,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_1_2",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -0.6399999856948853,
+        -0.8600000143051147,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_1_3",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -0.3700000047683716,
+        -0.8600000143051147,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_1_4",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -0.10000000149011612,
+        -0.8600000143051147,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_1_5",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.17000000178813934,
+        -0.8600000143051147,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_1_6",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.4399999976158142,
+        -0.8600000143051147,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_1_7",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.7099999785423279,
+        -0.8600000143051147,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_1_8",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.9800000190734863,
+        -0.8600000143051147,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_1_9",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        1.25,
+        -0.8600000143051147,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_2_0",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -1.1799999475479126,
+        -0.6399999856948853,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_2_1",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -0.9100000262260437,
+        -0.6399999856948853,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_2_2",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -0.6399999856948853,
+        -0.6399999856948853,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_2_3",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -0.3700000047683716,
+        -0.6399999856948853,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_2_4",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -0.10000000149011612,
+        -0.6399999856948853,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_2_5",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.17000000178813934,
+        -0.6399999856948853,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_2_6",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.4399999976158142,
+        -0.6399999856948853,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_2_7",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.7099999785423279,
+        -0.6399999856948853,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_2_8",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.9800000190734863,
+        -0.6399999856948853,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "key_2_9",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        1.25,
+        -0.6399999856948853,
+        2.625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "mouse",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        2.0999999046325684,
+        -0.8199999928474426,
+        2.569999933242798
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "raised_graphite"
+      ]
+    },
+    {
+      "name": "notebook",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -2.680000066757202,
+        -0.7200000286102295,
+        2.559999942779541
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "notebook_paper"
+      ]
+    },
+    {
+      "name": "notebook_spine",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        -3.309999942779541,
+        -0.8100000023841858,
+        2.619999885559082
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "projects_orange"
+      ]
+    },
+    {
+      "name": "pen",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 36,
+      "origin": [
+        -2.450000047683716,
+        -0.7400000095367432,
+        2.680000066757202
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "projects_orange"
+      ]
+    },
+    {
+      "name": "server_chassis",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        4.25,
+        0.44999998807907104,
+        1.7000000476837158
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "raised_graphite"
+      ]
+    },
+    {
+      "name": "server_slot_0",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        4.25,
+        -0.3449999988079071,
+        0.9200000166893005
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "server_indicator_0",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 28,
+      "origin": [
+        4.579999923706055,
+        -0.38999998569488525,
+        0.9200000166893005
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "systems_cyan"
+      ]
+    },
+    {
+      "name": "server_slot_1",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        4.25,
+        -0.3449999988079071,
+        1.309999942779541
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "server_indicator_1",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 28,
+      "origin": [
+        4.579999923706055,
+        -0.38999998569488525,
+        1.309999942779541
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "systems_cyan"
+      ]
+    },
+    {
+      "name": "server_slot_2",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        4.25,
+        -0.3449999988079071,
+        1.7000000476837158
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "server_indicator_2",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 28,
+      "origin": [
+        4.579999923706055,
+        -0.38999998569488525,
+        1.7000000476837158
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "systems_cyan"
+      ]
+    },
+    {
+      "name": "server_slot_3",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        4.25,
+        -0.3449999988079071,
+        2.0899999141693115
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "server_indicator_3",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 28,
+      "origin": [
+        4.579999923706055,
+        -0.38999998569488525,
+        2.0899999141693115
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "systems_cyan"
+      ]
+    },
+    {
+      "name": "server_slot_4",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        4.25,
+        -0.3449999988079071,
+        2.4800000190734863
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "server_indicator_4",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 28,
+      "origin": [
+        4.579999923706055,
+        -0.38999998569488525,
+        2.4800000190734863
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "systems_cyan"
+      ]
+    },
+    {
+      "name": "lamp_base",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        2.950000047683716,
+        0.019999999552965164,
+        2.549999952316284
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "lamp_stem",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 44,
+      "origin": [
+        2.950000047683716,
+        0.11999999731779099,
+        3.3499999046325684
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "lamp_shade",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 44,
+      "origin": [
+        2.950000047683716,
+        -0.019999999552965164,
+        4.150000095367432
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "lamp_warm"
+      ]
+    },
+    {
+      "name": "frame_vertical_-4.5",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        -4.5,
+        2.25,
+        3.549999952316284
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "raised_graphite"
+      ]
+    },
+    {
+      "name": "frame_vertical_4.5",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        4.5,
+        2.25,
+        3.549999952316284
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "raised_graphite"
+      ]
+    },
+    {
+      "name": "frame_horizontal_0.8",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        0.0,
+        2.25,
+        0.800000011920929
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "raised_graphite"
+      ]
+    },
+    {
+      "name": "frame_horizontal_6.3",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        0.0,
+        2.25,
+        6.300000190734863
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "raised_graphite"
+      ]
+    },
+    {
+      "name": "computational_module_0",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -3.4000000953674316,
+        2.0999999046325684,
+        1.7000000476837158
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "raised_graphite"
+      ]
+    },
+    {
+      "name": "computational_module_1",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -2.0,
+        2.0999999046325684,
+        4.949999809265137
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "raised_graphite"
+      ]
+    },
+    {
+      "name": "computational_module_2",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        -0.6000000238418579,
+        2.0999999046325684,
+        1.7000000476837158
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "raised_graphite"
+      ]
+    },
+    {
+      "name": "computational_module_3",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.800000011920929,
+        2.0999999046325684,
+        4.949999809265137
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "raised_graphite"
+      ]
+    },
+    {
+      "name": "computational_module_4",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        2.200000047683716,
+        2.0999999046325684,
+        1.7000000476837158
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "raised_graphite"
+      ]
+    },
+    {
+      "name": "computational_module_5",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        3.5999999046325684,
+        2.0999999046325684,
+        4.949999809265137
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "raised_graphite"
+      ]
+    },
+    {
+      "name": "cyan_path_0",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        -4.0,
+        1.9199999570846558,
+        1.0399999618530273
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "systems_cyan"
+      ]
+    },
+    {
+      "name": "orange_path_0",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        -3.700000047683716,
+        1.8799999952316284,
+        5.71999979019165
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "projects_orange"
+      ]
+    },
+    {
+      "name": "cyan_path_1",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        -3.180000066757202,
+        1.9199999570846558,
+        1.3200000524520874
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "systems_cyan"
+      ]
+    },
+    {
+      "name": "orange_path_1",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        -2.819999933242798,
+        1.8799999952316284,
+        5.5
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "projects_orange"
+      ]
+    },
+    {
+      "name": "cyan_path_2",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        -2.359999895095825,
+        1.9199999570846558,
+        1.0399999618530273
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "systems_cyan"
+      ]
+    },
+    {
+      "name": "orange_path_2",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        -1.940000057220459,
+        1.8799999952316284,
+        5.28000020980835
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "projects_orange"
+      ]
+    },
+    {
+      "name": "cyan_path_3",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        -1.5399999618530273,
+        1.9199999570846558,
+        1.3200000524520874
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "systems_cyan"
+      ]
+    },
+    {
+      "name": "orange_path_3",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        -1.059999942779541,
+        1.8799999952316284,
+        5.71999979019165
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "projects_orange"
+      ]
+    },
+    {
+      "name": "cyan_path_4",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        -0.7200000286102295,
+        1.9199999570846558,
+        1.0399999618530273
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "systems_cyan"
+      ]
+    },
+    {
+      "name": "orange_path_4",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        -0.18000000715255737,
+        1.8799999952316284,
+        5.5
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "projects_orange"
+      ]
+    },
+    {
+      "name": "cyan_path_5",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        0.10000000149011612,
+        1.9199999570846558,
+        1.3200000524520874
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "systems_cyan"
+      ]
+    },
+    {
+      "name": "orange_path_5",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        0.699999988079071,
+        1.8799999952316284,
+        5.28000020980835
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "projects_orange"
+      ]
+    },
+    {
+      "name": "cyan_path_6",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        0.9200000166893005,
+        1.9199999570846558,
+        1.0399999618530273
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "systems_cyan"
+      ]
+    },
+    {
+      "name": "orange_path_6",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        1.5800000429153442,
+        1.8799999952316284,
+        5.71999979019165
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "projects_orange"
+      ]
+    },
+    {
+      "name": "cyan_path_7",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        1.7400000095367432,
+        1.9199999570846558,
+        1.3200000524520874
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "systems_cyan"
+      ]
+    },
+    {
+      "name": "orange_path_7",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 12,
+      "origin": [
+        2.4600000381469727,
+        1.8799999952316284,
+        5.5
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "projects_orange"
+      ]
+    },
+    {
+      "name": "chair_seat",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.44999998807907104,
+        -2.0,
+        1.7799999713897705
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "raised_graphite"
+      ]
+    },
+    {
+      "name": "chair_back",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.44999998807907104,
+        -2.450000047683716,
+        2.799999952316284
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "raised_graphite"
+      ]
+    },
+    {
+      "name": "chair_column",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 44,
+      "origin": [
+        0.44999998807907104,
+        -2.0,
+        0.8999999761581421
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "desk_edge"
+      ]
+    },
+    {
+      "name": "developer_pelvis",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.44999998807907104,
+        -1.850000023841858,
+        2.299999952316284
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "developer_clothing"
+      ]
+    },
+    {
+      "name": "developer_torso",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 108,
+      "origin": [
+        0.44999998807907104,
+        -1.6299999952316284,
+        3.0799999237060547
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "developer_clothing"
+      ]
+    },
+    {
+      "name": "developer_neck",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 36,
+      "origin": [
+        0.44999998807907104,
+        -1.5,
+        3.859999895095825
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "developer_skin"
+      ]
+    },
+    {
+      "name": "developer_head",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 80,
+      "origin": [
+        0.44999998807907104,
+        -1.350000023841858,
+        4.300000190734863
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "developer_skin"
+      ]
+    },
+    {
+      "name": "developer_left_upper_arm",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 36,
+      "origin": [
+        -0.2199999988079071,
+        -1.3799999952316284,
+        3.140000104904175
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "developer_clothing"
+      ]
+    },
+    {
+      "name": "developer_right_upper_arm",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 36,
+      "origin": [
+        1.1200000047683716,
+        -1.3799999952316284,
+        3.140000104904175
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "developer_clothing"
+      ]
+    },
+    {
+      "name": "developer_left_hand",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 80,
+      "origin": [
+        -0.5,
+        -0.8799999952316284,
+        2.700000047683716
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "developer_skin"
+      ]
+    },
+    {
+      "name": "developer_right_hand",
+      "type": "MESH",
+      "parent": null,
+      "triangles": 80,
+      "origin": [
+        1.25,
+        -0.8999999761581421,
+        2.700000047683716
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": [
+        "developer_skin"
+      ]
+    },
+    {
+      "name": "soft_key",
+      "type": "LIGHT",
+      "parent": null,
+      "triangles": 0,
+      "origin": [
+        2.5,
+        -4.0,
+        8.800000190734863
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": []
+    },
+    {
+      "name": "cyan_fill",
+      "type": "LIGHT",
+      "parent": null,
+      "triangles": 0,
+      "origin": [
+        -5.0,
+        1.0,
+        5.5
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": []
+    },
+    {
+      "name": "lamp_practical",
+      "type": "LIGHT",
+      "parent": null,
+      "triangles": 0,
+      "origin": [
+        2.9000000953674316,
+        -0.3499999940395355,
+        3.950000047683716
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": []
+    },
+    {
+      "name": "cinematic_camera",
+      "type": "CAMERA",
+      "parent": null,
+      "triangles": 0,
+      "origin": [
+        10.100000381469727,
+        -13.100000381469727,
+        7.150000095367432
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "materials": []
+    }
+  ],
+  "totalEstimatedTriangles": 6908,
+  "materials": [
+    "desk_edge",
+    "developer_clothing",
+    "developer_skin",
+    "graphite_matte",
+    "lamp_warm",
+    "monitor_screen",
+    "notebook_paper",
+    "projects_orange",
+    "raised_graphite",
+    "systems_cyan",
+    "warm_grey_desk"
+  ],
+  "images": [
+    "Render Result",
+    "Viewer Node"
+  ],
+  "missingExternalFiles": [],
+  "armatures": [],
+  "actions": [
+    "AreaAction",
+    "cinematic__cinematic_camera",
+    "cinematic__computational_module_0",
+    "cinematic__computational_module_1",
+    "cinematic__computational_module_2",
+    "cinematic__computational_module_3",
+    "cinematic__computational_module_4",
+    "cinematic__computational_module_5",
+    "cinematic__developer_head",
+    "cinematic__developer_left_hand",
+    "cinematic__developer_right_hand",
+    "cinematic__monitor_screen",
+    "cinematic__projects_orange",
+    "cinematic__systems_cyan",
+    "PointAction"
+  ],
+  "nlaTracks": 0,
+  "frameRange": [
+    1,
+    384
+  ],
+  "unappliedTransforms": [],
+  "hiddenGeometry": [],
+  "duplicateMaterials": {},
+  "warnings": [
+    "No armature is present; character movement uses constrained object transforms."
+  ]
+}

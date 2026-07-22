@@ -1,0 +1,16 @@
+{
+  "blenderExecutable": "C:\\Users\\Asus\\AppData\\Local\\Microsoft\\WindowsApps\\blender-launcher.exe",
+  "blenderPackageExecutable": "C:\\Program Files\\WindowsApps\\BlenderFoundation.Blender_5.2.0.0_x64__ppwjx1n5r4v9t\\Blender\\blender.exe",
+  "sourceScene": "blender/source/workspace-source.blend",
+  "workingScene": "blender/working/workspace-cinematic.blend",
+  "resolution": [1280, 720],
+  "frameRate": 24,
+  "format": "WEBP",
+  "quality": 82,
+  "targetSequences": ["initialize", "details"],
+  "sequences": {
+    "initialize": { "start": 1, "end": 120, "directory": "public/cinematic/initialize" },
+    "transformation": { "start": 121, "end": 264, "directory": "public/cinematic/transformation" },
+    "details": { "start": 265, "end": 384, "directory": "public/cinematic/details" }
+  }
+}

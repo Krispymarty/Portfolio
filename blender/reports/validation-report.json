@@ -1,0 +1,48 @@
+{
+  "valid": true,
+  "resolution": [
+    1280,
+    720
+  ],
+  "totalFrameBytes": 9651036,
+  "totalFrameMegabytes": 9.2,
+  "sequences": [
+    {
+      "name": "initialize",
+      "expected": 120,
+      "actual": 120,
+      "missing": [],
+      "video": {
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "120"
+      }
+    },
+    {
+      "name": "transformation",
+      "expected": 144,
+      "actual": 144,
+      "missing": [],
+      "video": {
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "144"
+      }
+    },
+    {
+      "name": "details",
+      "expected": 120,
+      "actual": 120,
+      "missing": [],
+      "video": {
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "24/1",
+        "nb_frames": "120"
+      }
+    }
+  ],
+  "failures": []
+}

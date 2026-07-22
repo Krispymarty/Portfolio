@@ -3,6 +3,7 @@ import { ContactShadows, Environment, Lightformer, OrbitControls, PerspectiveCam
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
 import type { ReactNode } from "react";
+import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import * as THREE from "three";
 
 // ────────────────────────────────────────────────────────────────────────────────
@@ -1556,6 +1557,14 @@ const objectMarkerPositions: Record<WorkspaceObjectId, Vec3> = {
   lamp: [1.72, 1.55, -0.08],
 };
 
+const objectCameraPositions: Record<WorkspaceObjectId, Vec3> = {
+  monitor: [4.5, 2.95, 6.05],
+  server: [3.6, 2.1, 5.2],
+  notebook: [4.25, 2.18, 4.95],
+  frame: [4.85, 3.65, 6.35],
+  lamp: [4.2, 2.95, 5.25],
+};
+
 function InteractiveTarget({
   id,
   selected,
@@ -1596,12 +1605,108 @@ function InteractiveTarget({
   );
 }
 
-function SelectionMarker({ id }: { id: WorkspaceObjectId }) {
+const objectHotspotIds: WorkspaceObjectId[] = ["monitor", "server", "notebook", "frame", "lamp"];
+
+function HotspotPin({
+  id,
+  index,
+  selected,
+  reducedMotion,
+  onSelect,
+}: {
+  id: WorkspaceObjectId;
+  index: number;
+  selected: boolean;
+  reducedMotion: boolean;
+  onSelect: (id: WorkspaceObjectId) => void;
+}) {
+  const pinRef = useRef<THREE.Group>(null);
+
+  useFrame(({ clock }, delta) => {
+    if (!pinRef.current) return;
+    const pulse = reducedMotion ? 0 : Math.sin(clock.elapsedTime * 1.4 + index * 0.7) * 0.04;
+    const targetScale = selected ? 1.16 + pulse : 0.86;
+    pinRef.current.scale.setScalar(dampValue(pinRef.current.scale.x, targetScale, 7.5, delta));
+    pinRef.current.rotation.y += reducedMotion ? 0 : delta * (selected ? 0.75 : 0.28);
+  });
+
   return (
-    <mesh position={objectMarkerPositions[id]} rotation={[-Math.PI / 2, 0, 0]}>
-      <ringGeometry args={[0.18, 0.205, 32]} />
-      <meshBasicMaterial color="#d28a52" transparent opacity={0.88} depthWrite={false} />
-    </mesh>
+    <group
+      ref={pinRef}
+      position={objectMarkerPositions[id]}
+      onClick={(event) => {
+        event.stopPropagation();
+        onSelect(id);
+      }}
+      onPointerOver={(event) => {
+        event.stopPropagation();
+        document.body.style.cursor = "pointer";
+      }}
+      onPointerOut={() => {
+        document.body.style.cursor = "";
+      }}
+      name={`hotspot_${id}`}
+    >
+      <mesh>
+        <octahedronGeometry args={[0.07, 0]} />
+        <meshBasicMaterial color={selected ? "#d28a52" : "#79aeb3"} transparent opacity={selected ? 0.95 : 0.58} depthWrite={false} />
+      </mesh>
+      <mesh position={[0, -0.18, 0]} rotation={[-Math.PI / 2, 0, 0]} scale={selected ? 1 : 0.7}>
+        <ringGeometry args={[0.12, 0.135, 28]} />
+        <meshBasicMaterial color={selected ? "#d28a52" : "#79aeb3"} transparent opacity={selected ? 0.72 : 0.28} depthWrite={false} />
+      </mesh>
+    </group>
+  );
+}
+
+function ObjectHotspots({ selectedObject, reducedMotion, onSelect }: {
+  selectedObject: WorkspaceObjectId;
+  reducedMotion: boolean;
+  onSelect: (id: WorkspaceObjectId) => void;
+}) {
+  return (
+    <group name="object_hotspots">
+      {objectHotspotIds.map((id, index) => (
+        <HotspotPin
+          key={id}
+          id={id}
+          index={index}
+          selected={selectedObject === id}
+          reducedMotion={reducedMotion}
+          onSelect={onSelect}
+        />
+      ))}
+    </group>
+  );
+}
+
+function SelectionMarker({ id }: { id: WorkspaceObjectId }) {
+  const markerRef = useRef<THREE.Group>(null);
+  const elapsedRef = useRef(0);
+
+  useFrame((_, delta) => {
+    if (!markerRef.current) return;
+    elapsedRef.current = Math.min(0.7, elapsedRef.current + delta);
+    const progress = 1 - Math.exp(-elapsedRef.current * 8);
+    markerRef.current.scale.setScalar(0.58 + progress * 0.42);
+    markerRef.current.rotation.y += delta * (1 - progress) * 2.4;
+  });
+
+  return (
+    <group ref={markerRef} position={objectMarkerPositions[id]}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[0.18, 0.205, 32]} />
+        <meshBasicMaterial color="#d28a52" transparent opacity={0.88} depthWrite={false} />
+      </mesh>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} scale={0.62}>
+        <ringGeometry args={[0.18, 0.2, 32]} />
+        <meshBasicMaterial color="#79aeb3" transparent opacity={0.48} depthWrite={false} />
+      </mesh>
+      <mesh position={[0, -0.46, 0]}>
+        <cylinderGeometry args={[0.006, 0.006, 0.92, 8]} />
+        <meshBasicMaterial color="#d28a52" transparent opacity={0.5} depthWrite={false} />
+      </mesh>
+    </group>
   );
 }
 // Camera rig
@@ -1637,9 +1742,46 @@ function ExploreControls({
   selectedObject: WorkspaceObjectId;
   allowRotation: boolean;
 }) {
-  const target = objectMarkerPositions[selectedObject];
+  const controlsRef = useRef<OrbitControlsImpl>(null);
+  const transitioningRef = useRef(true);
+  const desiredPositionRef = useRef(new THREE.Vector3());
+  const desiredTargetRef = useRef(new THREE.Vector3());
+  const { camera, size } = useThree();
+
+  useEffect(() => {
+    transitioningRef.current = mode === "explore";
+  }, [mode, selectedObject, size.width]);
+
+  useFrame((_, delta) => {
+    const controls = controlsRef.current;
+    if (mode !== "explore" || !controls || !transitioningRef.current) return;
+
+    const compact = size.width <= 700;
+    const position = objectCameraPositions[selectedObject];
+    const target = objectMarkerPositions[selectedObject];
+    const desiredPosition = desiredPositionRef.current.set(
+      position[0] + (compact ? 0.65 : 0),
+      position[1] + (compact ? 0.45 : 0),
+      position[2] + (compact ? 1.35 : 0),
+    );
+    const desiredTarget = desiredTargetRef.current.set(target[0], target[1], target[2]);
+    const alpha = 1 - Math.exp(-delta * 4.8);
+
+    camera.position.lerp(desiredPosition, alpha);
+    controls.target.lerp(desiredTarget, alpha);
+    controls.update();
+
+    if (camera.position.distanceToSquared(desiredPosition) < 0.0008 && controls.target.distanceToSquared(desiredTarget) < 0.0008) {
+      camera.position.copy(desiredPosition);
+      controls.target.copy(desiredTarget);
+      controls.update();
+      transitioningRef.current = false;
+    }
+  });
+
   return (
     <OrbitControls
+      ref={controlsRef}
       enabled={mode === "explore"}
       enablePan={false}
       enableZoom={false}
@@ -1650,7 +1792,7 @@ function ExploreControls({
       maxPolarAngle={Math.PI * 0.46}
       minAzimuthAngle={-0.7}
       maxAzimuthAngle={0.72}
-      target={target}
+      onStart={() => { transitioningRef.current = false; }}
     />
   );
 }
@@ -1817,7 +1959,12 @@ function WorkspaceModel({ chapter, projectId, quality, reducedMotion, startupSta
         <CyanDataPaths materials={materials} chapter={pathChapter} reducedMotion={reducedMotion} />
         <OrangeDataPaths materials={materials} chapter={visualChapter} reducedMotion={reducedMotion} />
         <WorkspaceParticles quality={quality} />
-        {mode === "explore" && <SelectionMarker id={selectedObject} />}
+        {mode === "explore" && (
+          <>
+            <ObjectHotspots selectedObject={selectedObject} reducedMotion={reducedMotion} onSelect={onSelect} />
+            <SelectionMarker key={selectedObject} id={selectedObject} />
+          </>
+        )}
       </group>
     </group>
   );
@@ -1839,7 +1986,7 @@ export default function WorkspaceScene(props: WorkspaceSceneProps) {
         toneMapping: THREE.ACESFilmicToneMapping,
         toneMappingExposure: 1.05,
       }}
-      shadows={props.quality !== "lightweight"}
+      shadows={props.quality !== "lightweight" ? { type: THREE.PCFShadowMap } : false}
       performance={{ min: 0.5 }}
     >
       <PerspectiveCamera makeDefault position={[6.2, 4.15, 8.65]} fov={33} near={0.1} far={60} />

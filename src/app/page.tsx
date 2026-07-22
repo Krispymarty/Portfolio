@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ArrowUpRight } from "lucide-react";
-import { DecisionCore } from "@/components/decision-core";
 import { HeroArrival } from "@/components/hero-arrival";
+import { CinematicExperience } from "@/components/cinematic/cinematic-experience";
 import { NarrativeSignal } from "@/components/narrative-signal";
 import { JourneySequence } from "@/components/journey-sequence";
 import { CapabilityMap } from "@/components/capability-map";
@@ -42,6 +42,7 @@ export default function Home() {
       />
       <a className="skip-link" href="#main-content">Skip to content</a>
       <NarrativeSignal />
+      <CinematicExperience />
 
       <header className="site-header">
         <a className="site-mark" href="#arrival" aria-label="Yashmit Singh, back to the beginning">
@@ -85,17 +86,13 @@ export default function Home() {
               resume={profile.resume}
             />
           </div>
-          <div className="hero-core">
-            <DecisionCore />
-            <p className="scene-caption" aria-hidden="true"><span>Live workstation</span><strong>One system, evolving with the work</strong></p>
-          </div>
           <p className="scroll-cue"><span /> Follow the decision path</p>
         </section>
 
         <section className="journey section-shell" id="journey" aria-labelledby="journey-title">
           <div className="section-heading section-heading--split">
             <h2 id="journey-title">The work changed as the questions changed.</h2>
-            <p>First: can the model find the pattern? Then: can it explain the decision? Now: can the whole system be useful?</p>
+            <p>I started by asking whether a model could find the pattern. The work now asks two harder questions: can it explain the decision, and can the whole system be useful?</p>
           </div>
           <JourneySequence />
         </section>

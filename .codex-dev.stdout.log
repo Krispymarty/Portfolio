@@ -1,0 +1,27 @@
+
+> portfolio@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.9 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.29.193:3000
+- Environments: .env.local
+✓ Ready in 901ms
+
+ GET / 200 in 750ms (next.js: 393ms, application-code: 357ms)
+ GET / 200 in 107ms (next.js: 8ms, application-code: 99ms)
+✓ Compiled in 690ms
+✓ Compiled in 311ms
+✓ Compiled in 126ms
+✓ Compiled in 111ms
+ GET / 200 in 136ms (next.js: 13ms, application-code: 124ms)
+ GET / 200 in 133ms (next.js: 10ms, application-code: 123ms)
+ GET / 200 in 137ms (next.js: 11ms, application-code: 126ms)
+✓ Compiled in 539ms
+ GET / 200 in 102ms (next.js: 10ms, application-code: 92ms)
+ GET / 200 in 148ms (next.js: 13ms, application-code: 135ms)
+ GET / 200 in 88ms (next.js: 9ms, application-code: 79ms)
+✓ Compiled in 214ms
+ GET / 200 in 138ms (next.js: 14ms, application-code: 123ms)
+ GET / 200 in 217ms (next.js: 18ms, application-code: 199ms)
+ GET / 200 in 102ms (next.js: 7ms, application-code: 96ms)

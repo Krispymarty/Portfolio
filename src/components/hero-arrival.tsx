@@ -166,6 +166,13 @@ export function HeroArrival(props: HeroArrivalProps) {
           <a className="action action--quiet" href={props.resume} target="_blank" rel="noreferrer">
             Resume <Download aria-hidden="true" size={16} />
           </a>
+          <button
+            className="action action--quiet hero-explore-trigger"
+            type="button"
+            onClick={() => window.dispatchEvent(new CustomEvent("workspace-explore-request"))}
+          >
+            Explore workspace
+          </button>
         </div>
       </div>
     </div>

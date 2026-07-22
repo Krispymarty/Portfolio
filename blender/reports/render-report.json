@@ -1,0 +1,59 @@
+{
+  "blenderVersion": "5.2.0 LTS",
+  "startedAt": 1784735000.4343784,
+  "targetedSequences": [
+    "initialize",
+    "details"
+  ],
+  "sequences": [
+    {
+      "name": "initialize",
+      "frameStart": 1,
+      "frameEnd": 120,
+      "renderedFrameCount": 120,
+      "missingFrames": [],
+      "resolution": [
+        1280,
+        720
+      ],
+      "format": "WEBP",
+      "totalSize": 2401412,
+      "averageFrameSize": 20012,
+      "renderDurationSeconds": 60.01,
+      "warnings": []
+    },
+    {
+      "name": "transformation",
+      "frameStart": 121,
+      "frameEnd": 264,
+      "renderedFrameCount": 144,
+      "missingFrames": [],
+      "resolution": [
+        1280,
+        720
+      ],
+      "format": "WEBP",
+      "totalSize": 3751038,
+      "averageFrameSize": 26049,
+      "renderDurationSeconds": 98.25,
+      "warnings": []
+    },
+    {
+      "name": "details",
+      "frameStart": 265,
+      "frameEnd": 384,
+      "renderedFrameCount": 120,
+      "missingFrames": [],
+      "resolution": [
+        1280,
+        720
+      ],
+      "format": "WEBP",
+      "totalSize": 3498586,
+      "averageFrameSize": 29155,
+      "renderDurationSeconds": 60.55,
+      "warnings": []
+    }
+  ],
+  "finishedAt": 1784735120.9942756
+}

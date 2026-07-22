@@ -23,6 +23,9 @@ export const metadata: Metadata = {
   description:
     "Yashmit Singh is a computer-science student building explainable machine-learning systems and the product infrastructure around them.",
   applicationName: "Yashmit Singh Portfolio",
+  icons: {
+    icon: "/icon.png",
+  },
   authors: [{ name: "Yashmit Singh" }],
   creator: "Yashmit Singh",
   keywords: ["Yashmit Singh", "machine learning", "explainable AI", "computer vision", "FastAPI", "Next.js"],
