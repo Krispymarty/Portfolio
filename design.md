@@ -107,3 +107,10 @@ Default tier is inferred from viewport, device memory, and hardware concurrency.
 - Tab patterns support arrow, Home, and End keys.
 - Copy-email feedback uses a polite live region.
 - All meaningful content is outside canvas and follows logical reading order.
+## Guided and Explore modes
+
+Guided Story Mode is the default and owns chapter progression. Explore Mode is an optional layer on the same workstation—not a separate world. It supports five meaningful targets (monitor, server, notebook, computational frame, and lamp), bounded desktop orbit, touch selection on mobile, visible exit/skip controls, and semantic inspector content. Pan, zoom, locomotion, destructive physics, and essential Easter-egg content are prohibited.
+
+The startup sequence coordinates the dormant scene with the hero copy. It completes within 2.6 seconds, can be dismissed by any primary input, and is never persisted across reloads. The settled identity remains mounted from first render.
+
+Audio is intentionally omitted until a lightweight opt-in sound demonstrably improves comprehension. Visual state and accessible labels may never depend on sound.

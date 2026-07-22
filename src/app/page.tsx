@@ -1,8 +1,7 @@
-import Image from "next/image";
 import type { Metadata } from "next";
-import { ArrowUpRight, Download, MapPin } from "lucide-react";
-import profileImage from "../../public/profile.jpg";
+import { ArrowUpRight } from "lucide-react";
 import { DecisionCore } from "@/components/decision-core";
+import { HeroArrival } from "@/components/hero-arrival";
 import { NarrativeSignal } from "@/components/narrative-signal";
 import { JourneySequence } from "@/components/journey-sequence";
 import { CapabilityMap } from "@/components/capability-map";
@@ -43,29 +42,32 @@ export default function Home() {
       />
       <a className="skip-link" href="#main-content">Skip to content</a>
       <NarrativeSignal />
-      <DecisionCore />
 
       <header className="site-header">
         <a className="site-mark" href="#arrival" aria-label="Yashmit Singh, back to the beginning">
           <span>YS</span><strong>{profile.shortName}</strong>
         </a>
         <nav className="desktop-nav" aria-label="Primary navigation">
-          <a href="#journey">Journey</a>
-          <a href="#capabilities">Capabilities</a>
-          <a href="#work">Selected work</a>
+          <a href="#arrival">Home</a>
+          <a href="#journey">About</a>
+          <a href="#capabilities">Skills</a>
+          <a href="#work">Projects</a>
           <a href="#experience">Experience</a>
+          <a href="#contact">Contact</a>
         </nav>
-        <a className="header-contact" href={`mailto:${profile.email}`}>
-          Contact <ExternalArrow />
+        <a className="header-contact" href={profile.resume} target="_blank" rel="noreferrer">
+          Résumé <ExternalArrow />
         </a>
         <details className="mobile-menu">
           <summary aria-label="Open navigation">Menu</summary>
           <nav aria-label="Mobile navigation">
-            <a href="#journey">Journey</a>
-            <a href="#capabilities">Capabilities</a>
-            <a href="#work">Selected work</a>
+            <a href="#arrival">Home</a>
+            <a href="#journey">About</a>
+            <a href="#capabilities">Skills</a>
+            <a href="#work">Projects</a>
             <a href="#experience">Experience</a>
             <a href="#contact">Contact</a>
+            <a href={profile.resume} target="_blank" rel="noreferrer">Résumé</a>
           </nav>
         </details>
       </header>
@@ -73,36 +75,19 @@ export default function Home() {
       <main id="main-content">
         <section className="hero section-shell" id="arrival" aria-labelledby="arrival-title">
           <div className="hero-copy">
-            <p className="availability"><span />{profile.availability}</p>
-            <h1 id="arrival-title" aria-label={profile.headline}>
-              <span className="headline-mask" aria-hidden="true"><span>From model accuracy</span></span>
-              <span className="headline-mask" aria-hidden="true"><span>to useful decisions.</span></span>
-            </h1>
-            <p className="hero-intro">{profile.introduction}</p>
-            <div className="hero-actions">
-              <a className="action action--primary" href="#work">Inspect the work <ExternalArrow /></a>
-              <a className="action action--quiet" href={profile.resume} target="_blank" rel="noreferrer">
-                Résumé <Download aria-hidden="true" size={16} />
-              </a>
-            </div>
-            <div className="identity-proof">
-              <Image
-                src={profileImage}
-                alt="Portrait of Yashmit Singh"
-                width={80}
-                height={80}
-                priority
-                placeholder="blur"
-              />
-              <div>
-                <strong>{profile.name}</strong>
-                <span>{profile.role}</span>
-                <small><MapPin aria-hidden="true" size={13} />{profile.location}</small>
-              </div>
-            </div>
+            <HeroArrival
+              name={profile.name}
+              role={profile.role}
+              headline={profile.headline}
+              introduction={profile.introduction}
+              location={profile.location}
+              availability={profile.availability}
+              resume={profile.resume}
+            />
           </div>
-          <div className="hero-core" aria-hidden="true">
-            <p className="scene-caption"><span>Live workstation</span><strong>One system, evolving with the work</strong></p>
+          <div className="hero-core">
+            <DecisionCore />
+            <p className="scene-caption" aria-hidden="true"><span>Live workstation</span><strong>One system, evolving with the work</strong></p>
           </div>
           <p className="scroll-cue"><span /> Follow the decision path</p>
         </section>

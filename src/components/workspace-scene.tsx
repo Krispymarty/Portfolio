@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/immutability, react-hooks/purity */
-import { ContactShadows, Environment, Lightformer, PerspectiveCamera, RoundedBox } from "@react-three/drei";
+import { ContactShadows, Environment, Lightformer, OrbitControls, PerspectiveCamera, RoundedBox } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
+import type { ReactNode } from "react";
 import * as THREE from "three";
 
 // ────────────────────────────────────────────────────────────────────────────────
@@ -22,6 +23,7 @@ type WorkspaceMaterials = {
 
 export type SceneQuality = "high" | "balanced" | "lightweight";
 export type ProjectSceneId = "fraud-detection" | "weapon-detection" | "lifexp";
+export type WorkspaceObjectId = "monitor" | "server" | "notebook" | "frame" | "lamp";
 
 type WorkspaceSceneProps = {
   chapter: number;
@@ -29,6 +31,11 @@ type WorkspaceSceneProps = {
   quality: SceneQuality;
   paused: boolean;
   reducedMotion: boolean;
+  startupStage: number;
+  mode: "guided" | "explore";
+  selectedObject: WorkspaceObjectId;
+  allowRotation: boolean;
+  onSelect: (id: WorkspaceObjectId) => void;
   onModelReady: (model: THREE.Group | null) => void;
 };
 
@@ -1541,13 +1548,70 @@ function useWorkspaceMaterials(chapter: number, projectId: ProjectSceneId) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────────
+const objectMarkerPositions: Record<WorkspaceObjectId, Vec3> = {
+  monitor: [-0.62, 1.58, -0.18],
+  server: [-2.05, 0.42, 0.72],
+  notebook: [1.38, 0.62, 0.56],
+  frame: [0, 2.42, -1.0],
+  lamp: [1.72, 1.55, -0.08],
+};
+
+function InteractiveTarget({
+  id,
+  selected,
+  onSelect,
+  children,
+}: {
+  id: WorkspaceObjectId;
+  selected: boolean;
+  onSelect: (id: WorkspaceObjectId) => void;
+  children: ReactNode;
+}) {
+  const targetRef = useRef<THREE.Group>(null);
+
+  useFrame((_, delta) => {
+    if (!targetRef.current) return;
+    const targetScale = selected ? 1.018 : 1;
+    const next = dampValue(targetRef.current.scale.x, targetScale, 7, delta);
+    targetRef.current.scale.setScalar(next);
+  });
+
+  return (
+    <group
+      ref={targetRef}
+      onClick={(event) => {
+        event.stopPropagation();
+        onSelect(id);
+      }}
+      onPointerOver={(event) => {
+        event.stopPropagation();
+        document.body.style.cursor = "pointer";
+      }}
+      onPointerOut={() => {
+        document.body.style.cursor = "";
+      }}
+    >
+      {children}
+    </group>
+  );
+}
+
+function SelectionMarker({ id }: { id: WorkspaceObjectId }) {
+  return (
+    <mesh position={objectMarkerPositions[id]} rotation={[-Math.PI / 2, 0, 0]}>
+      <ringGeometry args={[0.18, 0.205, 32]} />
+      <meshBasicMaterial color="#d28a52" transparent opacity={0.88} depthWrite={false} />
+    </mesh>
+  );
+}
 // Camera rig
 // ────────────────────────────────────────────────────────────────────────────────
 
-function CameraRig({ chapter, reducedMotion }: { chapter: number; reducedMotion: boolean }) {
+function CameraRig({ chapter, reducedMotion, mode }: { chapter: number; reducedMotion: boolean; mode: "guided" | "explore" }) {
   const { camera, pointer, size } = useThree();
 
   useFrame((_, delta) => {
+    if (mode === "explore") return;
     const compact = size.width < 430;
     const chapterDepth = [0, 0.18, -0.12, 0.3, -0.2, 0.05][chapter] ?? 0;
     const pointerX = reducedMotion || compact ? 0 : pointer.x * 0.12;
@@ -1562,6 +1626,33 @@ function CameraRig({ chapter, reducedMotion }: { chapter: number; reducedMotion:
   });
 
   return null;
+}
+
+function ExploreControls({
+  mode,
+  selectedObject,
+  allowRotation,
+}: {
+  mode: "guided" | "explore";
+  selectedObject: WorkspaceObjectId;
+  allowRotation: boolean;
+}) {
+  const target = objectMarkerPositions[selectedObject];
+  return (
+    <OrbitControls
+      enabled={mode === "explore"}
+      enablePan={false}
+      enableZoom={false}
+      enableRotate={allowRotation}
+      enableDamping
+      dampingFactor={0.08}
+      minPolarAngle={Math.PI * 0.24}
+      maxPolarAngle={Math.PI * 0.46}
+      minAzimuthAngle={-0.7}
+      maxAzimuthAngle={0.72}
+      target={target}
+    />
+  );
 }
 
 // ────────────────────────────────────────────────────────────────────────────────
@@ -1621,10 +1712,14 @@ function WorkspaceParticles({ quality }: { quality: SceneQuality }) {
 // Master model orchestrator
 // ────────────────────────────────────────────────────────────────────────────────
 
-function WorkspaceModel({ chapter, projectId, quality, reducedMotion, onModelReady }: WorkspaceSceneProps) {
+function WorkspaceModel({ chapter, projectId, quality, reducedMotion, startupStage, mode, selectedObject, onSelect, onModelReady }: WorkspaceSceneProps) {
   const modelRef = useRef<THREE.Group>(null);
   const presentationRef = useRef<THREE.Group>(null);
-  const materials = useWorkspaceMaterials(chapter, projectId);
+  const visualChapter = chapter || (startupStage >= 2 ? 1 : 0);
+  const lampChapter = chapter || (startupStage >= 1 ? 1 : 0);
+  const developerChapter = chapter || (startupStage >= 3 ? 1 : 0);
+  const pathChapter = chapter || (startupStage >= 4 ? 1 : 0);
+  const materials = useWorkspaceMaterials(visualChapter, projectId);
   const { size, pointer } = useThree();
 
   useEffect(() => {
@@ -1635,7 +1730,7 @@ function WorkspaceModel({ chapter, projectId, quality, reducedMotion, onModelRea
   // Global material emissive drives (boosted to read well under ACES tone mapping)
   useFrame((_, delta) => {
     const screenTargets = [0.15, 0.7, 0.8, 1.15, 0.85, 0.65];
-    const screenTarget = screenTargets[chapter] ?? 0.15;
+    const screenTarget = screenTargets[visualChapter] ?? 0.15;
     materials.screen.emissiveIntensity = dampValue(
       materials.screen.emissiveIntensity,
       screenTarget,
@@ -1646,7 +1741,7 @@ function WorkspaceModel({ chapter, projectId, quality, reducedMotion, onModelRea
     const cyanTargets = [0, 0.3, 0.52, 0.38, 0.42, 0.48];
     materials.desaturatedCyan.emissiveIntensity = dampValue(
       materials.desaturatedCyan.emissiveIntensity,
-      cyanTargets[chapter] ?? 0,
+      cyanTargets[visualChapter] ?? 0,
       3.5,
       delta,
     );
@@ -1654,7 +1749,7 @@ function WorkspaceModel({ chapter, projectId, quality, reducedMotion, onModelRea
     const orangeTargets = [0, 0.08, 0.12, 0.36, 0.3, 0.44];
     materials.desaturatedOrange.emissiveIntensity = dampValue(
       materials.desaturatedOrange.emissiveIntensity,
-      orangeTargets[chapter] ?? 0,
+      orangeTargets[visualChapter] ?? 0,
       3.5,
       delta,
     );
@@ -1668,7 +1763,7 @@ function WorkspaceModel({ chapter, projectId, quality, reducedMotion, onModelRea
     const targetX = -0.34;
     const targetY = compact ? 0.3 : 0.34;
     const targetRotation =
-      -0.08 + chapter * 0.018 + (reducedMotion || compact ? 0 : pointer.x * 0.025);
+      -0.08 + visualChapter * 0.018 + (reducedMotion || compact || mode === "explore" ? 0 : pointer.x * 0.025);
     presentationRef.current.scale.setScalar(
       dampValue(presentationRef.current.scale.x, targetScale, 3.5, delta),
     );
@@ -1695,23 +1790,34 @@ function WorkspaceModel({ chapter, projectId, quality, reducedMotion, onModelRea
   return (
     <group ref={presentationRef} scale={0.94} position={[1.38, -0.02, 0]}>
       <group ref={modelRef} name="computational_studio">
-        <WorkstationBase materials={materials} chapter={chapter} />
+        <WorkstationBase materials={materials} chapter={visualChapter} />
         <MainDesk materials={materials} />
-        <PrimaryMonitor materials={materials} chapter={chapter} reducedMotion={reducedMotion} />
-        <ProjectModules materials={materials} chapter={chapter} projectId={projectId} reducedMotion={reducedMotion} />
-        <Keyboard materials={materials} chapter={chapter} />
-        <ServerModule materials={materials} chapter={chapter} />
-        <Books materials={materials} chapter={chapter} />
-        <DeskLamp materials={materials} chapter={chapter} reducedMotion={reducedMotion} />
-        <DeveloperFigure materials={materials} chapter={chapter} projectId={projectId} reducedMotion={reducedMotion} />
-        <RearComputationalFrame
-          materials={materials}
-          chapter={chapter}
-          reducedMotion={reducedMotion}
-        />
-        <CyanDataPaths materials={materials} chapter={chapter} reducedMotion={reducedMotion} />
-        <OrangeDataPaths materials={materials} chapter={chapter} reducedMotion={reducedMotion} />
+        <InteractiveTarget id="monitor" selected={selectedObject === "monitor"} onSelect={onSelect}>
+          <PrimaryMonitor materials={materials} chapter={visualChapter} reducedMotion={reducedMotion} />
+        </InteractiveTarget>
+        <ProjectModules materials={materials} chapter={visualChapter} projectId={projectId} reducedMotion={reducedMotion} />
+        <Keyboard materials={materials} chapter={visualChapter} />
+        <InteractiveTarget id="server" selected={selectedObject === "server"} onSelect={onSelect}>
+          <ServerModule materials={materials} chapter={visualChapter} />
+        </InteractiveTarget>
+        <InteractiveTarget id="notebook" selected={selectedObject === "notebook"} onSelect={onSelect}>
+          <Books materials={materials} chapter={visualChapter} />
+        </InteractiveTarget>
+        <InteractiveTarget id="lamp" selected={selectedObject === "lamp"} onSelect={onSelect}>
+          <DeskLamp materials={materials} chapter={lampChapter} reducedMotion={reducedMotion} />
+        </InteractiveTarget>
+        <DeveloperFigure materials={materials} chapter={developerChapter} projectId={projectId} reducedMotion={reducedMotion} />
+        <InteractiveTarget id="frame" selected={selectedObject === "frame"} onSelect={onSelect}>
+          <RearComputationalFrame
+            materials={materials}
+            chapter={visualChapter}
+            reducedMotion={reducedMotion}
+          />
+        </InteractiveTarget>
+        <CyanDataPaths materials={materials} chapter={pathChapter} reducedMotion={reducedMotion} />
+        <OrangeDataPaths materials={materials} chapter={visualChapter} reducedMotion={reducedMotion} />
         <WorkspaceParticles quality={quality} />
+        {mode === "explore" && <SelectionMarker id={selectedObject} />}
       </group>
     </group>
   );
@@ -1737,7 +1843,8 @@ export default function WorkspaceScene(props: WorkspaceSceneProps) {
       performance={{ min: 0.5 }}
     >
       <PerspectiveCamera makeDefault position={[6.2, 4.15, 8.65]} fov={33} near={0.1} far={60} />
-      <CameraRig chapter={props.chapter} reducedMotion={props.reducedMotion} />
+      <CameraRig chapter={props.chapter} reducedMotion={props.reducedMotion} mode={props.mode} />
+      <ExploreControls mode={props.mode} selectedObject={props.selectedObject} allowRotation={props.allowRotation} />
 
       {/* Base fill lighting */}
       <ambientLight intensity={0.5} color="#afbfba" />

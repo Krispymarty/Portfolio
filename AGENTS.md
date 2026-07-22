@@ -54,3 +54,12 @@ Required checks:
 - Review the browser console and check overflow, clipping, camera framing, touch targets, layout jumps, and loading states.
 - Run npm run lint, npx tsc --noEmit, the available tests, the Impeccable detector/audit, npm audit, and npm run build.
 - Self-verify the live result. Do not assume source changes are visually or behaviorally correct.
+## Living workspace invariants
+
+- Preserve Guided Story Mode as the default and keep Explore Mode optional, bounded, and immediately reversible.
+- Keep one WebGL canvas. Do not add a second shader layer, unrestricted camera, vehicle, first-person controls, or a game progression system.
+- Treat monitor, server, notebook, computational frame, and lamp as the only primary interaction targets unless content evidence justifies another.
+- Keep object meanings mirrored in semantic HTML and synchronize project selection with the existing `signal-project` event.
+- Mobile uses touch selection and predefined framing; it does not inherit desktop orbit.
+- Lightweight and reduced-motion modes use the static workstation and must not run a continuous canvas loop.
+- Update `docs/living-workspace-storyboard.md`, `docs/exploration-interactions.md`, and `docs/performance-budget.md` when changing the experience contract.

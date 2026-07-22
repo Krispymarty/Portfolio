@@ -82,3 +82,18 @@ After deployment, verify `/robots.txt`, `/sitemap.xml`, `/opengraph-image`, the 
 - `docs/interaction-storyboard.md`: chapter/scene behavior.
 - `docs/final-professional-audit.md`: completed verification.
 - `docs/asset-credits.md`: asset and attribution record.
+## Guided and Explore modes
+
+The workstation now supports two routes through the same evidence. Guided Mode follows the six scroll chapters. Explore Workspace opens a keyboard-accessible inspector for the monitor, server, notebook, computational frame, and lamp. Desktop orbit is bounded with pan/zoom disabled; mobile keeps a predefined composition and touch selection. Escape or Return to Guided Mode exits immediately, and Skip Experience links directly to the project case studies.
+
+`WorkspaceSceneProps` now also carries `mode`, `selectedObject`, `allowRotation`, and `onSelect`. Keep these values owned by `DecisionCore` so canvas clicks, keyboard tabs, project controls, quality state, and semantic inspector content remain synchronized.
+
+The lightweight tier is a static fallback rather than a continuously rendered low-detail canvas. Rendering pauses when the document is hidden or the workspace is outside the viewport.
+
+Supporting design documents:
+
+- `docs/reference-study-stas-bruno.md`
+- `docs/living-workspace-storyboard.md`
+- `docs/exploration-interactions.md`
+- `docs/performance-budget.md`
+- `docs/final-reference-comparison.md`
