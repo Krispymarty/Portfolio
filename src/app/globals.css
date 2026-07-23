@@ -89,9 +89,10 @@ section { scroll-margin-top: 84px; }
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 36px;
-  background: color-mix(in oklch, var(--canvas) 94%, transparent);
+  background: color-mix(in oklch, var(--canvas) 98%, transparent);
+  border-top: 1px solid var(--line-soft);
   border-bottom: 1px solid var(--line-soft);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
 }
 
 .site-mark { min-height: 44px; display: inline-flex; align-items: center; gap: 12px; width: max-content; }
@@ -506,10 +507,30 @@ section { scroll-margin-top: 84px; }
   color: var(--canvas);
 }
 .contact-signal { position: relative; width: 180px; aspect-ratio: 1; display: grid; place-items: center; }
-.contact-signal span { position: relative; z-index: 2; font: 750 11px/1 var(--font-mono); }
-.contact-signal i { position: absolute; inset: 8%; border: 1px solid color-mix(in oklch, var(--canvas) 55%, transparent); border-radius: 50%; }
+.contact-signal span {
+  position: relative;
+  z-index: 2;
+  padding: 8px 12px;
+  background: var(--amber);
+  color: var(--canvas);
+  font: 800 11px/1 var(--font-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.contact-signal i { position: absolute; inset: 8%; border: 1px solid color-mix(in oklch, var(--canvas) 55%, transparent); border-radius: 0; transform: rotate(45deg); }
 .contact-signal i:nth-of-type(2) { inset: 25%; }
-.contact-signal i:nth-of-type(3) { inset: 41%; background: var(--canvas); }
+.contact-signal::after {
+  content: "";
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  right: 18%;
+  top: 50%;
+  border-radius: 50%;
+  background: var(--canvas);
+  transform: translateY(-50%);
+}
 .contact-copy h2 { margin-bottom: 22px; font-size: clamp(2.4rem, 5.4vw, 5rem); line-height: 0.98; letter-spacing: -0.04em; }
 .contact-copy p { max-width: 62ch; margin-bottom: 0; font-size: 15px; font-weight: 560; }
 .contact-actions { display: grid; align-content: center; }
@@ -937,7 +958,7 @@ html[data-chapter="contact"] .global-signal-scene { width: 138px; height: 138px;
   letter-spacing: 0.12em;
 }
 .capability-field article {
-  --branch: calc(72px + var(--capability-index) * 22px);
+  --branch: 42px;
   position: relative;
   min-height: 176px;
   padding: 26px 0 28px;
@@ -955,11 +976,12 @@ html[data-chapter="contact"] .global-signal-scene { width: 138px; height: 138px;
 .capability-field article[data-connected="false"] .capability-node i { transform: scaleX(0.15); }
 .capability-node {
   position: absolute;
-  left: -58px;
-  top: 50%;
+  left: -54px;
+  top: 38px;
   width: var(--branch);
   height: 1px;
   background: var(--line-soft);
+  pointer-events: none;
 }
 .capability-node::before {
   content: "";
@@ -978,6 +1000,12 @@ html[data-chapter="contact"] .global-signal-scene { width: 138px; height: 138px;
   background: var(--violet);
   transform-origin: left;
   transition: transform var(--motion-major) var(--ease-out);
+}
+.capability-name,
+.skill-list,
+.evidence-links {
+  position: relative;
+  z-index: 1;
 }
 
 /* PROJECT INSTRUMENT */
@@ -1272,26 +1300,30 @@ html[data-chapter="contact"] .global-signal-scene { width: 138px; height: 138px;
 /* CONTEXT CONVERGENCE */
 .proof-layout {
   position: relative;
-  padding-bottom: 190px;
+  padding-bottom: 150px;
   grid-template-columns: 1fr 1fr 0.9fr;
 }
 .proof-layout::before {
   content: "";
   position: absolute;
   left: 50%;
-  bottom: 42px;
-  width: 78px;
+  bottom: 40px;
+  width: 74px;
   aspect-ratio: 1;
-  border: 1px solid var(--amber);
+  border: 1px solid color-mix(in oklch, var(--amber) 75%, var(--line));
+  background: color-mix(in oklch, var(--canvas) 88%, transparent);
   transform: translateX(-50%) rotate(45deg);
 }
 .proof-layout::after {
   content: "impact aperture";
   position: absolute;
   left: 50%;
-  bottom: 73px;
+  bottom: 72px;
+  z-index: 1;
+  padding: 0 8px;
+  background: var(--canvas);
   color: var(--amber);
-  font: 600 8px/1 var(--font-mono);
+  font: 700 8px/1 var(--font-mono);
   transform: translateX(-50%);
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -1302,32 +1334,26 @@ html[data-chapter="contact"] .global-signal-scene { width: 138px; height: 138px;
   content: "";
   position: absolute;
   left: 50%;
-  bottom: -115px;
+  bottom: -82px;
   width: 1px;
-  height: 126px;
-  background: var(--line);
+  height: 86px;
+  background: color-mix(in oklch, var(--amber) 42%, var(--line));
   transform-origin: top;
 }
-.proof-column:first-child::after { transform: rotate(-52deg); }
+.proof-column:first-child::after { transform: translateX(24px) rotate(-34deg); }
 .proof-column:nth-child(2)::after { transform: rotate(0); }
-.achievement-list::after { transform: rotate(52deg); }
+.achievement-list::after { transform: translateX(-24px) rotate(34deg); }
 .achievement-list { padding: 0; background: transparent; border-top: 1px solid var(--violet); }
 .achievement-list > h3 { padding-top: 24px; }
 
 /* OPEN CHANNEL RESOLUTION */
 .contact { position: relative; overflow: hidden; }
-.contact-signal { perspective: 700px; }
+.contact-signal { perspective: none; }
 .contact-signal i {
-  inset: 18%;
-  border-radius: 0;
-  transform: rotateX(62deg) rotateZ(45deg) translateZ(0);
-  transition: inset var(--motion-major) var(--ease-in-out), transform var(--motion-major) var(--ease-in-out), background var(--motion-standard);
+  transition: inset var(--motion-major) var(--ease-in-out), transform var(--motion-major) var(--ease-in-out);
 }
-.contact-signal i:nth-of-type(2) { inset: 28%; transform: rotateX(62deg) rotateZ(54deg) translateZ(24px); }
-.contact-signal i:nth-of-type(3) { inset: 38%; border-radius: 50%; background: var(--canvas); transform: none; }
-html[data-chapter="contact"] .contact-signal i:first-of-type { inset: 8%; transform: rotateX(0) rotateZ(45deg); }
-html[data-chapter="contact"] .contact-signal i:nth-of-type(2) { inset: 22%; transform: rotateX(0) rotateZ(45deg); }
-html[data-chapter="contact"] .contact-signal i:nth-of-type(3) { inset: 40%; transform: none; }
+html[data-chapter="contact"] .contact-signal i:first-of-type { inset: 5%; transform: rotate(45deg); }
+html[data-chapter="contact"] .contact-signal i:nth-of-type(2) { inset: 24%; transform: rotate(45deg); }
 .contact-actions a {
   transition: color var(--motion-instant), background var(--motion-instant);
 }
@@ -2287,9 +2313,9 @@ html[data-chapter="contact"] .cinematic-shade {
 .cinematic-explore__exit { position: absolute; top: 18px; right: 18px; z-index: 50; }
 .cinematic-explore__loading { min-height: 100%; display: grid; place-items: center; color: var(--ink-muted); }
 
-body > .site-header,
 body > main,
 body > .site-footer { position: relative; z-index: 2; }
+body > .site-header { z-index: var(--z-sticky); }
 .hero {
   min-height: 132vh; grid-template-columns: minmax(0, 760px) 1fr;
   align-items: start; background: transparent;

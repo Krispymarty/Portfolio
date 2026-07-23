@@ -140,7 +140,7 @@ export default function Home() {
         </section>
 
         <section className="contact section-shell" id="contact" aria-labelledby="contact-title">
-          <div className="contact-signal" aria-hidden="true"><span>Open channel</span><i /><i /><i /></div>
+          <div className="contact-signal" aria-hidden="true"><span>Contact open</span><i /><i /></div>
           <div className="contact-copy">
             <h2 id="contact-title">Have a real problem worth thinking through?</h2>
             <p>I&apos;m interested in internships, early-career engineering roles, and collaborations around AI systems, product engineering, and applied machine learning.</p>
